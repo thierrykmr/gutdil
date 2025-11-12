@@ -27,6 +27,10 @@ $ npm run dev
 ## Installer le serveur Firebase 
 $ npm i firebase
 
+## Installer Tailwind
+$ npm install -D tailwindcss@3 postcss autoprefixer
+$ npx tailwindcss init -p
+
 
 
 
