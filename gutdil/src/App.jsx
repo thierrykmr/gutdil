@@ -1,19 +1,18 @@
 import React from 'react';
 import Auth from './components/Auth';
+import { useAuth } from './context/AuthContext'; // 1. Importer le Hook
+import HomePage from './components/HomePage';
 import './App.css';
 
 function App() {
+  // 2. Lire le "tableau d'affichage"
+  const { currentUser } = useAuth(); 
+
+  // 3. Le commutateur (logique d'affichage), cette page sera le commutateur de toute l'appli pour dire si un utilisateur est connecté ou pas
   return (
-    <div className="App">
-      <p>hello</p>
-      <header>
-        <h1>Goodeal v2</h1>
-      </header>
-      <main>
-        {/* 2. On utilise notre composant comme une balise HTML */}
-        <Auth />
-      </main>
-    </div>
+    <>
+      {currentUser ? <HomePage /> : <Auth />}
+    </>
   );
 }
 

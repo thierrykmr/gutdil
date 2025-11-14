@@ -36,7 +36,7 @@ function Auth() {
         await createUserWithEmailAndPassword(auth, email, password);
       }
     } catch (err) {
-      setError("Erreur : " + err.message); 
+      setError(`Erreur : ${err.message}`);
     }
   };
 
