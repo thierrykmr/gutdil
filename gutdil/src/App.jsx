@@ -1,18 +1,20 @@
 import React from 'react';
-import Auth from './components/Auth';
-import { useAuth } from './context/AuthContext'; // 1. Importer le Hook
-import HomePage from './components/HomePage';
-import './App.css';
+import { Outlet } from 'react-router-dom'; // Pour afficher les pages enfants
+import Navbar from './components/Navbar'; 
 
 function App() {
-  // 2. Lire le "tableau d'affichage"
-  const { currentUser } = useAuth(); 
 
-  // 3. Le commutateur (logique d'affichage), cette page sera le commutateur de toute l'appli pour dire si un utilisateur est connecté ou pas
   return (
-    <>
-      {currentUser ? <HomePage /> : <Auth />}
-    </>
+    <div className="min-h-screen bg-gray-900">
+      {/* 1. La Navbar est toujours affichée */}
+      <Navbar />
+      
+      {/* 2. C'est ici que React Router chargera la page
+             (Accueil, A Propos, Connexion...) */}
+      <main>
+        <Outlet />
+      </main>
+    </div>
   );
 }
 

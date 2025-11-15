@@ -1,6 +1,6 @@
-// src/components/Auth.jsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebaseConfig';
 import { 
   createUserWithEmailAndPassword, 
@@ -8,7 +8,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup
 } from "firebase/auth";
-// import './Auth.css'; // <-- On n'a plus besoin de ça !
 
 // J'ai mis le SVG de Google dans un composant pour plus de propreté
 const GoogleIcon = () => (
@@ -26,6 +25,17 @@ function Auth() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(''); 
 
+  const navigate = useNavigate(); // NOUVEAU: Hook de navigation
+  const { currentUser } = useAuth(); // NOUVEAU: Lire le contexte
+
+// Gardien de sécurité : Si l'utilisateur est DÉJÀ connecté, on le redirige vers /home
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/home');
+    }
+  }, [currentUser, navigate]);
+
+
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     setError(''); 
@@ -35,6 +45,7 @@ function Auth() {
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
       }
+      navigate('/home'); // Redirection après succès
     } catch (err) {
       setError(`Erreur : ${err.message}`);
     }
@@ -45,12 +56,18 @@ function Auth() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
+      navigate('/home'); // Redirection après succès
     } catch (err) {
       if (err.code !== 'auth/popup-closed-by-user') {
         setError("Erreur : " + err.message);
       }
     }
   };
+
+  // N'afficher le formulaire que si l'utilisateur n'est pas encore chargé
+  if (currentUser) {
+    return null; // Ou un spinner de chargement
+  }
   
   // --- AFFICHAGE TAILWIND ---
   // Notez les classes : ce sont des "classes utilitaires"
