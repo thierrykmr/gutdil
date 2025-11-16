@@ -26,7 +26,6 @@ function Home() {
     return null; // Ou un spinner
   }
 
-  // C'est l'interface de votre ancien "Accueil.jsx"
   return (
     <div className="max-w-6xl mx-auto p-8 text-white">
       <header className="flex justify-between items-center mb-8">

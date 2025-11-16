@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
     }
     
     // Lance un nouveau minuteur de 5 minutes
-    inactivityTimerRef.current = setTimeout(logout,  3* 60 * 1000); // 3 minutes
+    inactivityTimerRef.current = setTimeout(logout,  5* 60 * 1000);
   };
 
   useEffect(() => {
