@@ -14,7 +14,6 @@ function CreateDeal({ onDealPosted }) {
 
   const [error, setError] = useState('');
 
-
   const { currentUser } = useAuth(); // On récupère l'utilisateur connecté
   const { setAlert } = useAlert(); // Pour afficher les alertes globales
 
@@ -86,7 +85,7 @@ function CreateDeal({ onDealPosted }) {
             id="title" type="text" value={title}
             onChange={(e) => setTitle(e.target.value)} 
             required placeholder="Ex: Gemini gratuit pendant 1 an"
-            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
           />
         </div>
         
@@ -98,7 +97,7 @@ function CreateDeal({ onDealPosted }) {
             id="description" value={description}
             onChange={(e) => setDescription(e.target.value)} 
             rows="3" placeholder="Donnez plus de détails..."
-            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
           />
         </div>
 
@@ -111,7 +110,7 @@ function CreateDeal({ onDealPosted }) {
               id="price" type="number" step="0.01" value={price}
               onChange={(e) => setPrice(e.target.value)} 
               optional='true' placeholder="100.00"
-              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
           <div className="flex-grow">
@@ -122,7 +121,7 @@ function CreateDeal({ onDealPosted }) {
               id="link" type="url" value={link}
               onChange={(e) => setLink(e.target.value)} 
               optional='true' placeholder="https://..."
-              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
         </div>
