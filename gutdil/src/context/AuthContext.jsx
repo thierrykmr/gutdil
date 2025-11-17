@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
-import { auth } from '../firebaseConfig'; // Notre config firebase
+import { auth } from '../firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 
@@ -71,8 +71,7 @@ export function AuthProvider({ children }) {
       // Lance le minuteur pour la première fois
       resetInactivityTimer();
 
-      // Fonction de "nettoyage"
-      // S'exécute quand le composant est "démonté" ou quand l'utilisateur se déconnecte
+      // Fonction de "nettoyage" s'exécute quand le composant est "démonté" ou quand l'utilisateur se déconnecte
       return () => {
         events.forEach(event => window.removeEventListener(event, handleActivity));
         // Annule le minuteur en cours

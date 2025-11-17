@@ -3,7 +3,7 @@ import { db, auth } from '../firebaseConfig'; // Importez la BDD et l'auth
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; // Fonctions Firestore
 import { useAuth } from '../context/AuthContext'; // Notre hook global !
 
-function CreateDeal() {
+function CreateDeal({ onDealPosted }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -27,6 +27,8 @@ function CreateDeal() {
     setError('');
     setSuccess('');
 
+    console.log("Posting deal:", { title, description, price, link });
+
     try {
       // 1. Référence à la collection "deals"
       const dealsCollectionRef = collection(db, 'deals');
@@ -38,11 +40,11 @@ function CreateDeal() {
         price: parseFloat(price) || 0, // Convertit en nombre
         link: link,
         createdAt: serverTimestamp(), // Heure du serveur (fiable)
-        authorId: currentUser.uid,    // QUI A POSTÉ
+        authorId: currentUser.uid,    // l'id de l'auteur du deal
         authorEmail: currentUser.email, // Pratique pour l'affichage
         // (On ajoutera les votes et commentaires plus tard)
-        voteCount: 0,
-        commentCount: 0,
+        //likeCount: 0,
+        //commentCount: 0,
       });
 
       // 3. Succès
@@ -55,6 +57,11 @@ function CreateDeal() {
       setPrice('');
       setLink('');
 
+      // Attendre 1 seconde (pour lire le message) puis appeler la fonction pour fermer le modal.
+      setTimeout(() => {
+        onDealPosted(); 
+      }, 1000); // 1 seconde
+
     } catch (err) {
       console.error(err);
       setError("Erreur lors de la publication. " + err.message);
@@ -63,7 +70,7 @@ function CreateDeal() {
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-lg mx-auto mb-12">
+    <>
       <h3 className="text-2xl font-bold mb-4 text-white">
         Partager un bon plan
       </h3>
@@ -75,7 +82,7 @@ function CreateDeal() {
           <input 
             id="title" type="text" value={title}
             onChange={(e) => setTitle(e.target.value)} 
-            required placeholder="Ex: SSD NVMe 1To"
+            required placeholder="Ex: Gemini gratuit pendant 1 an"
             className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
           />
         </div>
@@ -100,7 +107,7 @@ function CreateDeal() {
             <input 
               id="price" type="number" step="0.01" value={price}
               onChange={(e) => setPrice(e.target.value)} 
-              required placeholder="100.00"
+              optional='true' placeholder="100.00"
               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
@@ -111,7 +118,7 @@ function CreateDeal() {
             <input 
               id="link" type="url" value={link}
               onChange={(e) => setLink(e.target.value)} 
-              required placeholder="https://..."
+              optional='true' placeholder="https://..."
               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
@@ -129,7 +136,7 @@ function CreateDeal() {
           {loading ? 'Publication...' : 'Poster le deal'}
         </button>
       </form>
-    </div>
+    </>
   );
 }
 
