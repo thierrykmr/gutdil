@@ -2,17 +2,21 @@ import React, { useState } from 'react';
 import { db, auth } from '../firebaseConfig'; // Importez la BDD et l'auth
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; // Fonctions Firestore
 import { useAuth } from '../context/AuthContext'; // Notre hook global !
+import { useAlert } from '../context/AlertContext';
 
 function CreateDeal({ onDealPosted }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [link, setLink] = useState('');
+
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+
 
   const { currentUser } = useAuth(); // On récupère l'utilisateur connecté
+  const { setAlert } = useAlert(); // Pour afficher les alertes globales
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +29,6 @@ function CreateDeal({ onDealPosted }) {
 
     setLoading(true);
     setError('');
-    setSuccess('');
 
     console.log("Posting deal:", { title, description, price, link });
 
@@ -48,7 +51,7 @@ function CreateDeal({ onDealPosted }) {
       });
 
       // 3. Succès
-      setSuccess("Bon plan posté avec succès !");
+      setAlert("Bon plan posté avec succès !", "success");
       setLoading(false);
       
       // 4. Vider le formulaire
@@ -64,7 +67,7 @@ function CreateDeal({ onDealPosted }) {
 
     } catch (err) {
       console.error(err);
-      setError("Erreur lors de la publication. " + err.message);
+      setAlert("Erreur lors de la publication. " + err.message, "error");
       setLoading(false);
     }
   };
@@ -126,7 +129,6 @@ function CreateDeal({ onDealPosted }) {
         
         {/* Affichage des messages */}
         {error && <p className="text-sm text-red-400">{error}</p>}
-        {success && <p className="text-sm text-green-400">{success}</p>}
 
         <button 
           type="submit" 

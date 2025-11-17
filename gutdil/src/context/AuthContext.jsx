@@ -36,6 +36,7 @@ export function AuthProvider({ children }) {
     inactivityTimerRef.current = setTimeout(logout,  5* 60 * 1000);
   };
 
+  // useEffect pour surveiller l'état d'authentification
   useEffect(() => {
     // onAuthStateChanged est un "espion" de Firebase. Il se déclenche à chaque connexion/déconnexion/rafraîchissement
     const unsubscribe = onAuthStateChanged(auth, (user) => {
