@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DEFAULT_IMAGE_URL } from '../constants/index';
+import { Link } from 'react-router-dom';
 
 // Fonction utilitaire simple pour formater la date
 const formatDate = (timestamp) => {
@@ -19,8 +20,10 @@ function DealCard({ deal }) {
 
     return (
         // La carte elle-même
-        <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden transition duration-200 ease-in-out transform hover:scale-[1.02] hover:shadow-2xl">
-            
+        <Link 
+          to={`/deals/${deal.id}`} 
+          className="block bg-gray-800 rounded-xl shadow-lg overflow-hidden transition duration-200 ease-in-out transform hover:scale-[1.02] hover:shadow-2xl"
+        >
             {/* Image: affiche l'image du deal ou le fallback DEFAULT_IMAGE_URL */}
                         <div className="h-40 bg-gray-700 overflow-hidden">
                             {imgFailed ? (
@@ -83,22 +86,43 @@ function DealCard({ deal }) {
                     <span className="text-3xl font-extrabold text-cyan-400">
                         {deal.price} €
                     </span>
-                    {deal.link ? (<a
-                        href={deal.link}
-                        target="_blank"
-                        className="px-4 py-2 rounded-lg bg-cyan-500 text-white font-semibold text-sm hover:bg-cyan-600 transition-colors"
-                    >
-                        Voir le deal
-                    </a>) : null}
+                    
                 </div>
                 
-                {/* Espace pour les votes (futur) */}
-                <div className="pt-2 text-sm text-gray-500">
-                    👍 0 | 💬 0
+                {/* NOUVEAU: Espace pour les interactions (Likes & Commentaires) */}
+                <div className="pt-2 flex justify-start items-center space-x-4 border-t border-gray-700 mt-2">
+                    
+                    {/* Bouton de Like (Exemple de futur bouton interactif) */}
+                    <button 
+                        onClick={(e) => {
+                            e.stopPropagation(); // <--- ESSENTIEL : N'ouvre PAS le deal
+                            console.log("Like cliqué pour le deal:", deal.id);
+                        }}
+                        className="flex items-center text-sm text-gray-400 hover:text-red-500 transition-colors"
+                        aria-label="Aimer ce deal"
+                    >
+                        <span className="text-lg mr-1">👍</span>
+                        0
+                    </button>
+
+                    {/* Bouton de Commentaire (Exemple de futur bouton interactif) */}
+                    <button 
+                        onClick={(e) => {
+                            e.stopPropagation(); // <--- ESSENTIEL : N'ouvre PAS le deal
+                            console.log("Commentaire cliqué pour le deal:", deal.id);
+                        }}
+                        className="flex items-center text-sm text-gray-400 hover:text-cyan-500 transition-colors"
+                        aria-label="Voir les commentaires"
+                    >
+                        <span className="text-lg mr-1">💬</span>
+                        0
+                    </button>
+
                 </div>
 
             </div>
-        </div>
+        
+        </Link>
     );
 }
 

@@ -130,7 +130,7 @@ function Navbar() {
           {/* Partie Droite: Auth (Bureau) + Bouton Hamburger (Mobile) */}
           <div className="flex items-center">
             
-            {/* NOUVEAU: Les boutons de connexion/déconnexion sont 
+            {/* Les boutons de connexion/déconnexion sont 
                 maintenant cachés sur mobile (hidden) */}
             <div className="hidden md:flex items-center">
               {currentUser ? (
@@ -155,7 +155,7 @@ function Navbar() {
               )}
             </div>
 
-            {/* NOUVEAU: Le bouton Hamburger (visible sur mobile: md:hidden) */}
+            {/* Le bouton Hamburger (visible sur mobile: md:hidden) */}
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -170,7 +170,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* NOUVEAU: Le menu mobile (s'affiche conditionnellement) */}
+      {/* Le menu mobile (s'affiche conditionnellement) */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute w-full bg-gray-800 z-10" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">

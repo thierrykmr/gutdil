@@ -12,6 +12,8 @@ import Accueil from './pages/Accueil.jsx';
 import APropos from './pages/APropos.jsx';
 import Auth from './pages/Auth.jsx';
 import Home from './pages/Home.jsx';
+import DealDetail from './pages/DealDetail.jsx';
+
 import Alert from './components/Alert.jsx';
 
 //definition des routes
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
         path: 'home',
         element: <Home />,
       },
+      {
+        path: 'deals/:dealId', 
+        element: <DealDetail />,
+      }
 
     ],
   },
