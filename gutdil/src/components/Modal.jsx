@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Une simple icône 'X' pour fermer
 const CloseIcon = () => (
   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -11,7 +10,7 @@ const CloseIcon = () => (
  * Notre composant Modal générique.
  * @param {boolean} isOpen - Si le modal doit être visible.
  * @param {function} onClose - Ce qu'il faut faire pour le fermer.
- * @param {React.ReactNode} children - Le contenu à afficher *dans* le modal.
+ * @param {ReactNode} children - Le contenu à afficher *dans* le modal.
  */
 function Modal({ isOpen, onClose, children }) {
   
@@ -30,7 +29,7 @@ function Modal({ isOpen, onClose, children }) {
       onClick={onClose} 
     >
       {/* 2. La "Carte" du Modal (le contenu blanc/gris) */}
-      {/* 'onClick' ici empêche la fermeture si on clique *dans* le modal. */}
+      {/* 'onClick' ici empêche la fermeture si on clique dans le modal. */}
       <div
         className="relative w-full max-w-lg bg-gray-800 rounded-lg shadow-xl p-6"
         onClick={(e) => e.stopPropagation()} 
@@ -45,7 +44,7 @@ function Modal({ isOpen, onClose, children }) {
         </button>
 
         {/* 4. Le Contenu */}
-        {/* C'est ici que notre formulaire de création sera injecté. */}
+        {/* C'est ici que notre formulaire de création sera injecté */}
         {children}
       </div>
     </div>
