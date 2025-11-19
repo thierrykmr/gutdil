@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { db, auth } from '../firebaseConfig'; // Importez la BDD et l'auth
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'; // Fonctions Firestore
-import { useAuth } from '../context/AuthContext'; // Notre hook global !
+import { db, auth, storage } from '../firebaseConfig'; // Importez la BDD et l'auth
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 
 function CreateDeal({ onDealPosted }) {
@@ -10,12 +11,23 @@ function CreateDeal({ onDealPosted }) {
   const [price, setPrice] = useState('');
   const [link, setLink] = useState('');
 
+  const [ imageFile, setImageFile ] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState('');
 
   const { currentUser } = useAuth(); // On récupère l'utilisateur connecté
   const { setAlert } = useAlert(); // Pour afficher les alertes globales
+
+
+  // Gérer la sélection du fichier
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+      console.log("Fichier sélectionné:", e.target.files[0].name); 
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,9 +41,22 @@ function CreateDeal({ onDealPosted }) {
     setLoading(true);
     setError('');
 
+    let imageUrl = null;
+
     console.log("Posting deal:", { title, description, price, link });
 
     try {
+
+      if (imageFile) {
+        // Crée la référence dans Storage (ex: deals/USER_ID/nom_du_fichier_timestamp)
+        const storageRef = ref(
+          storage, 
+          `deals/${currentUser.uid}/${imageFile.name}_${Date.now()}`
+        );     
+        await uploadBytes(storageRef, imageFile); // Upload le fichier
+        imageUrl = await getDownloadURL(storageRef); // Récupère l'URL publique
+      }
+
       // 1. Référence à la collection "deals"
       const dealsCollectionRef = collection(db, 'deals');
 
@@ -41,9 +66,10 @@ function CreateDeal({ onDealPosted }) {
         description: description,
         price: parseFloat(price) || 0, // Convertit en nombre
         link: link,
-        createdAt: serverTimestamp(), // Heure du serveur (fiable)
-        authorId: currentUser.uid,    // l'id de l'auteur du deal
-        authorEmail: currentUser.email, // Pratique pour l'affichage
+        imageUrl: imageUrl,
+        createdAt: serverTimestamp(),
+        authorId: currentUser.uid, 
+        authorEmail: currentUser.email,
         // (On ajoutera les votes et commentaires plus tard)
         //likeCount: 0,
         //commentCount: 0,
@@ -58,6 +84,7 @@ function CreateDeal({ onDealPosted }) {
       setDescription('');
       setPrice('');
       setLink('');
+      setImageFile(null);
 
       // Attendre 1 seconde (pour lire le message) puis appeler la fonction pour fermer le modal.
       setTimeout(() => {
@@ -99,6 +126,22 @@ function CreateDeal({ onDealPosted }) {
             rows="3" placeholder="Donnez plus de détails..."
             className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
           />
+        </div>
+
+        <div>
+          <label htmlFor="image" className="block text-sm font-medium text-gray-300 mb-1">
+            Image du deal (Optionnel)
+          </label>
+          <input 
+            id="image" type="file" accept="image/*"
+            onChange={handleImageChange}
+            className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4
+                       file:rounded-md file:border-0 file:text-sm file:font-semibold
+                       file:bg-violet-600 file:text-white hover:file:bg-violet-700"
+          />
+          {imageFile && (
+            <p className="text-xs text-gray-400 mt-1">Fichier sélectionné : {imageFile.name}</p>
+          )}
         </div>
 
         <div className="flex gap-4">
