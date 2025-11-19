@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { db, auth, storage } from '../firebaseConfig'; // Importez la BDD et l'auth
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { DEAL_CATEGORIES } from '../constants/index';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 
 function CreateDeal({ onDealPosted }) {
+  const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -38,6 +40,11 @@ function CreateDeal({ onDealPosted }) {
       return;
     }
 
+    if (!category) {
+      setError("Veuillez sélectionner une catégorie.");
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -64,6 +71,7 @@ function CreateDeal({ onDealPosted }) {
       await addDoc(dealsCollectionRef, {
         title: title,
         description: description,
+        category: category,
         price: parseFloat(price) || 0, // Convertit en nombre
         link: link,
         imageUrl: imageUrl,
@@ -82,6 +90,7 @@ function CreateDeal({ onDealPosted }) {
       // 4. Vider le formulaire
       setTitle('');
       setDescription('');
+      setCategory('');
       setPrice('');
       setLink('');
       setImageFile(null);
@@ -104,6 +113,25 @@ function CreateDeal({ onDealPosted }) {
         Partager un bon plan
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
+        
+        <div>
+          <label htmlFor="category" className="block text-sm font-medium text-gray-300 mb-1">
+            Catégorie
+          </label>
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            <option value="" disabled>-- Choisir une catégorie --</option>
+            {DEAL_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </div>
+
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
             Titre du deal
