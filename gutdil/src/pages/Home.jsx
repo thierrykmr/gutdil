@@ -6,6 +6,7 @@ import { signOut } from 'firebase/auth';
 
 import  CreateDeal from '../components/CreateDeal';
 import Modal from '../components/Modal';
+import DealList from '../components/DealList';
 
 function Home() { 
   const { currentUser } = useAuth();
@@ -55,8 +56,8 @@ function Home() {
         <main>
           {/* Le formulaire <CreateDeal /> n'est PLUS affiché ici */}
           
-          <div className="bg-gray-800 p-8 rounded-lg text-center text-gray-400">
-            (C'est ici que nous afficherons la liste des deals)
+          <div>
+            <DealList />
           </div>
         </main>
       </div>
