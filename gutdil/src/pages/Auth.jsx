@@ -107,6 +107,7 @@ function Auth() {
               id="email" type="email" value={email}
               onChange={(e) => setEmail(e.target.value)} 
               required placeholder="votre@email.com"
+              autoComplete='email'
               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
@@ -117,7 +118,7 @@ function Auth() {
             <input 
               id="password" type="password" value={password}
               onChange={(e) => setPassword(e.target.value)} 
-              required placeholder="••••••••"
+              required placeholder="••••••••" autoComplete="current-password"
               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
