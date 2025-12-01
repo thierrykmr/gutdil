@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DEFAULT_IMAGE_URL } from '../constants/index';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { doc, runTransaction, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
@@ -26,10 +27,19 @@ function DealCard({ deal }) {
 
     const [ currentLikeCount, setCurrentLikeCount ] = useState(0); // Etat du compteur des likes
 
+    const [ currentCommentCount, setCurrentCommentCount ] = useState(0); // Etat du compteur des commentaires
+
     const [imgFailed, setImgFailed] = useState(false);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
-        if (!currentUser) return; 
+          if (!currentUser) {
+            navigate('/connexion');
+          }
+      }, [currentUser, navigate]);
+
+    useEffect(() => { 
 
         // Référence au document de like spécifique à cet utilisateur pour ce deal
         const likeDocRef = doc(db, 'deals', deal.id, 'likes', currentUser.uid);
@@ -39,8 +49,9 @@ function DealCard({ deal }) {
             setHasLiked(snapshot.exists());
         });
 
-        // Met à jour le like count si le deal est mis à jour (pour le temps réel)
+        // Met à jour le like ou comment count si le deal est mis à jour (pour le temps réel)
         setCurrentLikeCount(deal.likeCount || 0);
+        setCurrentCommentCount(deal.commentCount || 0);
 
         return () => unsubscribe(); // Nettoyage
     }, [currentUser, deal.id, deal.likeCount]); // Dépend de l'utilisateur et du deal
@@ -160,14 +171,14 @@ function DealCard({ deal }) {
                     {/* Bouton de Commentaire (Exemple de futur bouton interactif) */}
                     <button 
                         onClick={(e) => {
-                            e.stopPropagation(); // <--- ESSENTIEL : N'ouvre PAS le deal
+
                             console.log("Commentaire cliqué pour le deal:", deal.id);
                         }}
                         className="flex items-center text-sm text-gray-400 hover:text-cyan-500 transition-colors"
                         aria-label="Voir les commentaires"
                     >
                         <span className="text-lg mr-1">💬</span>
-                        0
+                        {currentCommentCount}
                     </button>
 
                 </div>

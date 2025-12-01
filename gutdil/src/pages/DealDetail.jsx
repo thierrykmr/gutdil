@@ -4,6 +4,11 @@ import { db } from '../firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore'; 
 import { useAuth } from '../context/AuthContext';
 
+import CommentList from '../components/CommonList';
+import CommentForm from '../components/CommentForm';
+
+import { onSnapshot } from 'firebase/firestore';
+
 function DealDetail() {
   // Récupère le paramètre dynamique de l'URL
   const { dealId } = useParams(); 
@@ -14,12 +19,39 @@ function DealDetail() {
   const [deal, setDeal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [ currentCommentCount, setCurrentCommentCount ] = useState(deal?.commentCount || 0); // L'initialisation est importante !
 
   useEffect(() => {
       if (!currentUser) {
         navigate('/connexion');
       }
   }, [currentUser, navigate]);
+
+  // Écoute en temps réel les changements du document deal (pour le compteur)
+useEffect(() => {
+    // S'assurer que l'objet deal est présent avant de créer la référence Firestore
+    if (!deal?.id) return; 
+
+    // Référence au document deal parent
+    const dealDocRef = doc(db, 'deals', deal.id); 
+
+    // onSnapshot écoute ce document spécifiquement
+    const unsubscribe = onSnapshot(dealDocRef, (snapshot) => {
+        if (snapshot.exists()) {
+            const updatedDealData = snapshot.data();
+            
+            // --- C'EST ICI LA CORRECTION ---
+            // On lit la nouvelle valeur directement depuis le snapshot de Firestore
+            setCurrentCommentCount(updatedDealData.commentCount || 0); 
+            // ---------------------------------
+        }
+    });
+
+    // Nettoyage : arrête d'écouter
+    return () => unsubscribe(); 
+    
+}, [deal]); // Dépend de l'objet deal (et donc de deal.id)
+  
 
   useEffect(() => {
     // Si l'ID du deal n'est pas là, on ne fait rien
@@ -96,11 +128,31 @@ function DealDetail() {
                 Voir le deal
             </a>) : null }
         </div>
-        {/* Placeholder pour Commentaires / Votes (futur) */}
-        <div className="mt-8 text-center text-gray-500 border-t border-gray-700 pt-4">
-            {/* Zone de discussion / votes */}
+        { deal.commentCount > 0 ?
+            (<div className="mt-8 pt-4 border-t border-gray-700 flex justify-between items-center">
+            
+                <span className="text-sm text-gray-500">Veuillez scroller versla bas pour consulter les commentaires. </span>
+            </div>) : null }
+
+      </div>
+
+      {/* Placeholder pour Commentaires / Votes */}
+      <div className="mt-8 border-t border-gray-700 pt-4">
+        {/* NOUVELLE ZONE : Affichage du formulaire de commentaire */}
+        <CommentForm dealId={deal.id} /> 
+        
+        {/* Liste des commentaires */}
+        <div className="mt-8">
+            {/* On utilise le vrai compteur du deal */}
+            <h3 className="text-xl font-bold text-gray-200 mb-4">
+              {deal.commentCount || 0} Commentaires
+            </h3>
+            
+            {/* 2. INTÉGRATION DU COMPOSANT */}
+            <CommentList dealId={deal.id} />
         </div>
       </div>
+
     </div>
   );
 }
