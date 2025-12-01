@@ -32,7 +32,7 @@ Fonctionnalités
 - (Préciser ici les fonctionnalités principales du projet : pages, formulaires, appels API, authentification, etc.)
 
 Prérequis
-- Node.js v16+ (v18 recommandé)
+- Node.js v22+
 - npm (ou yarn / pnpm)
 
 Installation
@@ -116,10 +116,10 @@ Structure recommandée du projet
 Fichiers recommandés à ajouter
 - `.env.example` — liste des variables d'environnement attendues
 - `README.md` (celui-ci)
-- `LICENSE` — ex : MIT si tu veux autoriser la réutilisation
+- `LICENSE` — ex : MIT si je veux autoriser la réutilisation
 - `.gitignore` — exclure node_modules, dist, .env, etc.
 - `CONTRIBUTING.md` — guide rapide pour contributeurs
-- `package-lock.json` ou `pnpm-lock.yaml` (selon gestionnaire), si tu veux verrouiller les versions
+- `package-lock.json` ou `pnpm-lock.yaml` (selon gestionnaire), si je veux verrouiller les versions
 
 Exemple de `.gitignore` recommandé
 ```
@@ -143,9 +143,5 @@ Contribuer
 - Ajouter des tests pour les nouvelles fonctionnalités
 
 Licence & contact
-- Aucune licence détectée — ajoute un fichier `LICENSE` (par ex. MIT) pour autoriser explicitement la réutilisation.
+- Aucune licence — ajouter un fichier `LICENSE` (par ex. MIT) pour autoriser explicitement la réutilisation.
 - Auteur / contact : Thierry — @thierrykmr
-
----
-
-Souhaites‑tu que j'extraie automatiquement les "scripts" et dépendances depuis ton package.json pour les intégrer dans le README (ou que je génère `.env.example` basé sur le code) ? Si oui, donne-moi l'autorisation et je récupère ces fichiers pour enrichir immédiatement le README.  
