@@ -29,7 +29,7 @@ function CommentList({ dealId }) {
       const commentsData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      }));
+      })).reverse(); // inversion de la liste récupérée
       setComments(commentsData);
       setLoading(false);
     });

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore'; 
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'; 
 import { useAuth } from '../context/AuthContext';
 
 import CommentList from '../components/CommonList';
 import CommentForm from '../components/CommentForm';
 
-import { onSnapshot } from 'firebase/firestore';
 
 function DealDetail() {
   // Récupère le paramètre dynamique de l'URL
@@ -19,7 +18,7 @@ function DealDetail() {
   const [deal, setDeal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [ currentCommentCount, setCurrentCommentCount ] = useState(deal?.commentCount || 0); // L'initialisation est importante !
+  const [ currentCommentCount, setCurrentCommentCount ] = useState(0);
 
   useEffect(() => {
       if (!currentUser) {
@@ -39,8 +38,7 @@ useEffect(() => {
     const unsubscribe = onSnapshot(dealDocRef, (snapshot) => {
         if (snapshot.exists()) {
             const updatedDealData = snapshot.data();
-            
-            // --- C'EST ICI LA CORRECTION ---
+
             // On lit la nouvelle valeur directement depuis le snapshot de Firestore
             setCurrentCommentCount(updatedDealData.commentCount || 0); 
             // ---------------------------------
@@ -48,8 +46,7 @@ useEffect(() => {
     });
 
     // Nettoyage : arrête d'écouter
-    return () => unsubscribe(); 
-    
+    return () => unsubscribe();    
 }, [deal]); // Dépend de l'objet deal (et donc de deal.id)
   
 
@@ -66,7 +63,9 @@ useEffect(() => {
         const dealSnapshot = await getDoc(dealDocRef);
 
         if (dealSnapshot.exists()) {
-          setDeal({ id: dealSnapshot.id, ...dealSnapshot.data() });
+          const data = dealSnapshot.data();
+          setDeal({ id: dealSnapshot.id, ...data });
+          setCurrentCommentCount(data.commentCount || 0); // synchro initiale
         } else {
           setError("Ce deal n'existe pas ou a été supprimé.");
         }
@@ -145,7 +144,7 @@ useEffect(() => {
         <div className="mt-8">
             {/* On utilise le vrai compteur du deal */}
             <h3 className="text-xl font-bold text-gray-200 mb-4">
-              {deal.commentCount || 0} Commentaires
+              {currentCommentCount} Commentaires
             </h3>
             
             {/* 2. INTÉGRATION DU COMPOSANT */}
