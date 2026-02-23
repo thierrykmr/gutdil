@@ -31,6 +31,8 @@ function DealCard({ deal }) {
 
     const [imgFailed, setImgFailed] = useState(false);
 
+    const isOwner = currentUser && currentUser.uid === deal.authorId;
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -103,11 +105,35 @@ function DealCard({ deal }) {
         }
     };
 
+    const handleEditClick = (dealId) => {
+        navigate(`/edit-deal/${dealId}`);
+    };
+
     return (
         <Link 
           to={`/deals/${deal.id}`} 
-          className="block bg-gray-800 rounded-xl shadow-lg overflow-hidden transition duration-200 ease-in-out transform hover:scale-[1.02] hover:shadow-2xl"
+          className="block bg-gray-800 rounded-xl shadow-lg overflow-hidden transition duration-200 ease-in-out transform hover:scale-[1.02] hover:shadow-2xl group"
         >
+            {isOwner && (
+                <button 
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        console.log("Modifier deal:", deal.id);
+                        handleEditClick(deal.id); 
+                    }}
+                    className="absolute top-2 right-2 z-10 p-1.5 rounded-full bg-gray-900/80 text-gray-300 hover:text-cyan-400 transition-opacity
+                               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    aria-label="Modifier le deal"
+                >
+                    {/* SVG d'un crayon/éditer */}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793z" />
+                        <path d="M11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                </button>
+            )}
+            
             {/* Image: affiche l'image du deal ou le fallback DEFAULT_IMAGE_URL */}
             <div className="h-40 bg-gray-700 overflow-hidden">
                 {imgFailed ? (

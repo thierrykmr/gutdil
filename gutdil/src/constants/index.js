@@ -3,6 +3,7 @@ export const DEAL_CATEGORIES = [
   "Tech",
   "Bourses",
   "Services",
+  "Emploi",
   "Associations",
   "Loisirs",
   "Autres"
