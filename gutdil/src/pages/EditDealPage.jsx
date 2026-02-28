@@ -173,12 +173,12 @@ function EditDealPage() {
                 <div className="flex gap-4">
                     <div className="flex-1">
                         <label htmlFor="price" className="block text-sm font-medium text-gray-300 mb-1">Prix</label>
-                        <input id="price" type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} required 
+                        <input id="price" type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)}
                                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
                     </div>
                     <div className="flex-grow">
                         <label htmlFor="link" className="block text-sm font-medium text-gray-300 mb-1">Lien</label>
-                        <input id="link" type="url" value={link} onChange={(e) => setLink(e.target.value)} required 
+                        <input id="link" type="url" value={link} onChange={(e) => setLink(e.target.value)}  
                                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
                     </div>
                 </div>

@@ -17,8 +17,13 @@ function Alert() {
 
   return (
     // Ce 'div' sera notre bannière
-    <div className={`p-4 w-full text-white text-center font-semibold ${alertTypeClass[alert.type] || 'bg-gray-700'}`}>
-      {alert.msg}
+    <div className={`fixed top-20 left-1/2 -translate-x-1/2 z-[100] 
+                     px-6 py-3 rounded-lg shadow-2xl text-white font-bold 
+                     min-w-[300px] text-center animate-bounce-in
+                     ${alertTypeClass[alert.type] || 'bg-gray-700'}`}>
+      <div className="flex items-center justify-center gap-2">
+        <span>{alert.msg}</span>
+      </div>
     </div>
   );
 }

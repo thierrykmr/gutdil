@@ -130,7 +130,7 @@ useEffect(() => {
         { deal.commentCount > 0 ?
             (<div className="mt-8 pt-4 border-t border-gray-700 flex justify-between items-center">
             
-                <span className="text-sm text-gray-500">Veuillez scroller versla bas pour consulter les commentaires. </span>
+                <span className="text-sm text-gray-500">Veuillez scroller vers le bas pour consulter les commentaires. </span>
             </div>) : null }
 
       </div>
