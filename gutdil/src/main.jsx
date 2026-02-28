@@ -16,6 +16,7 @@ import DealDetail from './pages/DealDetail.jsx';
 import EditDealPage from './pages/EditDealPage.jsx';
 
 import Alert from './components/Alert.jsx';
+import { DealsProvider } from './context/DealsContext.jsx';
 
 //definition des routes
 const router = createBrowserRouter([
@@ -56,9 +57,11 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* Envelopper toute l'app avec le contexte d'authentification */}
     <AuthProvider>
-        < AlertProvider>
-          <RouterProvider router={router} />
-        </AlertProvider >
+        <DealsProvider>
+            < AlertProvider>
+                <RouterProvider router={router} />
+            </AlertProvider >
+        </DealsProvider>
     </AuthProvider>
   </StrictMode>,
 )

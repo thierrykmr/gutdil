@@ -1,22 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useDeals } from '../context/DealsContext'; // Import du contexte
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebaseConfig';
 import { signOut } from 'firebase/auth';
 import FilterBar from '../components/FilterBar';
 
-import  CreateDeal from '../components/CreateDeal';
+import CreateDeal from '../components/CreateDeal';
 import Modal from '../components/Modal';
 import DealList from '../components/DealList';
 
 function Home() { 
   const { currentUser } = useAuth();
+  const { 
+    selectedCategory, 
+    setSelectedCategory, 
+    scrollPosition, 
+    setScrollPosition 
+  } = useDeals(); // Utilisation du contexte global
+  
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState('');
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Gardien de sécurité : Si personne n'est pas connecté, on redirige vers la page de connexion
+  // 1. Restaurer la position du scroll dès que le composant est monté
+  useLayoutEffect(() => {
+    if (scrollPosition > 0) {
+      // Un léger timeout permet de s'assurer que le contenu est rendu
+      const timer = setTimeout(() => {
+        window.scrollTo(0, scrollPosition);
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, []); // [] car on ne veut le faire qu'au montage initial
+
+  // 2. Sauvegarder la position du scroll en temps réel
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [setScrollPosition]);
+
+  // Gardien de sécurité
   useEffect(() => {
     if (!currentUser) {
       navigate('/connexion');
@@ -25,57 +52,48 @@ function Home() {
 
   const handleLogout = () => {
     signOut(auth);
-    // Le contexte mettra à jour currentUser, ce qui re-déclenchera
-    // le useEffect ci-dessus et redirigera vers /connexion
   };
 
-  // N'affiche rien tant qu'on ne sait pas si l'utilisateur est connecté
   if (!currentUser) {
-    return null; // Ou un spinner
+    return null;
   }
 
   return (
-    // NOUVEAU: Nous utilisons un Fragment <>...</> car le Modal
-    // est un "frère" de la div principale, pas un "enfant".
     <>
       <div className="max-w-6xl mx-auto p-4 md:p-8 text-white">
         
-        {/* Header (modifié) */}
         <header className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">
             Les derniers Bons Plans
           </h2>
           
-          {/* Bouton pour créer un bon plan*/}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 rounded-md bg-cyan-500 text-white font-semibold hover:bg-cyan-600 transition-colors"
+            className="px-4 py-2 rounded-md bg-cyan-500 text-white font-semibold hover:bg-cyan-600 transition-colors shadow-lg shadow-cyan-500/20"
           >
             +
           </button>
         </header>
         
         <main>
-          {/* NOUVEAU: La barre de filtres */}
+          {/* La FilterBar utilise maintenant la catégorie du contexte */}
           <FilterBar 
             selectedCategory={selectedCategory} 
             onSelectCategory={setSelectedCategory} 
           />
+          
           <div>
-            <DealList selectedCategory={selectedCategory} />
+            {/* DealList n'a plus besoin de prop, il puise dans le contexte */}
+            <DealList />
           </div>
         </main>
       </div>
 
-      {/* NOUVEAU: Le Modal est ici, en bas du JSX */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
       >
-        {/* Nous passons le formulaire <CreateDeal /> comme "enfant" */}
         <CreateDeal 
-          // Nous ajoutons une "prop" pour que le formulaire
-          // puisse dire au Modal de se fermer après succès.
           onDealPosted={() => setIsModalOpen(false)} 
         />
       </Modal>
