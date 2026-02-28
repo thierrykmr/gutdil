@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'; 
+import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore'; 
 import DealCard from './DealCard';
 
-function DealList() {
+function DealList({ selectedCategory }) {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,11 +12,20 @@ function DealList() {
     setError(null);
     setLoading(true);
     
-    // 1. Définir la requête Firestore : Nous récupérons tous les deals, triés par date de création décroissante
-    const dealsQuery = query(
-      collection(db, 'deals'),
-      orderBy('createdAt', 'desc')
-    );
+    // 1. Base de la requête
+    let dealsQuery = collection(db, 'deals');
+
+    // 2. Ajout du filtre si une catégorie est sélectionnée
+    if (selectedCategory) {
+      dealsQuery = query(
+        dealsQuery, 
+        where('category', '==', selectedCategory),
+        orderBy('createdAt', 'desc')
+      );
+    } else {
+      // Si "Tous", on trie juste par date
+      dealsQuery = query(dealsQuery, orderBy('createdAt', 'desc'));
+    }
 
     // 2. onSnapshot : Le listener temps réel: Il s'exécute une fois initialement, puis à chaque modification de la collection.
     const unsubscribe = onSnapshot(dealsQuery, 
@@ -42,7 +51,7 @@ function DealList() {
     // C'est crucial pour la performance : arrête d'écouter la base de données
     // lorsque le composant DealList quitte la page.
     return () => unsubscribe();
-  }, []); // [] signifie que ce listener ne s'exécute qu'une seule fois.
+  }, [selectedCategory]); // [] signifie que ce listener ne s'exécute qu'une seule fois.
 
   if (loading) {
     return <p className="text-gray-400 text-center py-8">Chargement des bons plans...</p>;

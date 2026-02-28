@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebaseConfig';
 import { signOut } from 'firebase/auth';
+import FilterBar from '../components/FilterBar';
 
 import  CreateDeal from '../components/CreateDeal';
 import Modal from '../components/Modal';
@@ -11,6 +12,7 @@ import DealList from '../components/DealList';
 function Home() { 
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -44,7 +46,7 @@ function Home() {
             Les derniers Bons Plans
           </h2>
           
-          {/* NOUVEAU: Le bouton "Ajouter" qui OUVRE le modal */}
+          {/* Bouton pour créer un bon plan*/}
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 rounded-md bg-cyan-500 text-white font-semibold hover:bg-cyan-600 transition-colors"
@@ -54,10 +56,13 @@ function Home() {
         </header>
         
         <main>
-          {/* Le formulaire <CreateDeal /> n'est PLUS affiché ici */}
-          
+          {/* NOUVEAU: La barre de filtres */}
+          <FilterBar 
+            selectedCategory={selectedCategory} 
+            onSelectCategory={setSelectedCategory} 
+          />
           <div>
-            <DealList />
+            <DealList selectedCategory={selectedCategory} />
           </div>
         </main>
       </div>
