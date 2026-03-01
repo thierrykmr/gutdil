@@ -50,22 +50,30 @@ function DealCard({ deal }) {
           }
       }, [currentUser, navigate]);
 
-    useEffect(() => { 
+    useEffect(() => {
+        if (!currentUser) return;
 
-        // Référence au document de like spécifique à cet utilisateur pour ce deal
+        // 1. Écoute si MOI j'ai liké ce deal
         const likeDocRef = doc(db, 'deals', deal.id, 'likes', currentUser.uid);
-
-        // Écoute en temps réel si le document de like existe
-        const unsubscribe = onSnapshot(likeDocRef, (snapshot) => {
+        const unsubscribeLike = onSnapshot(likeDocRef, (snapshot) => {
             setHasLiked(snapshot.exists());
         });
 
-        // Met à jour le like ou comment count si le deal est mis à jour (pour le temps réel)
-        setCurrentLikeCount(deal.likeCount || 0);
-        setCurrentCommentCount(deal.commentCount || 0);
+        // 2. Écoute le document du DEAL pour avoir le likeCount en temps réel
+        const dealDocRef = doc(db, 'deals', deal.id);
+        const unsubscribeDeal = onSnapshot(dealDocRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                setCurrentLikeCount(data.likeCount || 0);
+                setCurrentCommentCount(data.commentCount || 0);
+            }
+        });
 
-        return () => unsubscribe(); // Nettoyage
-    }, [currentUser, deal.id, deal.likeCount]); // Dépend de l'utilisateur et du deal
+        return () => {
+            unsubscribeLike();
+            unsubscribeDeal();
+        };
+    }, [currentUser, deal.id]); // Supprime deal.likeCount des dépendances
 
     // 2. Gérer le basculement Like/Unlike (Transaction)
     const handleLikeToggle = async (e) => {
@@ -85,22 +93,23 @@ function DealCard({ deal }) {
                     throw "Le deal n'existe pas ou a été supprimé.";
                 }
 
-                const newlikeCount = dealDoc.data().likeCount || 0;
+                // On récupère la valeur la plus fraîche depuis la DB dans la transaction
+                const dbLikeCount = dealDoc.data().likeCount || 0;
                 
                 if (hasLiked) {
                     // UNLIKE: Diminuer le likeCount sur le deal et supprimer le doc like
-                    transaction.update(dealDocRef, { likeCount: Math.max(newlikeCount - 1, 0) });
+                    transaction.update(dealDocRef, { likeCount: Math.max(dbLikeCount - 1, 0) });
                     transaction.delete(likeDocRef);
                 } else {
                     // LIKE: Augmenter le likeCount sur le deal et créer le doc like
-                    transaction.update(dealDocRef, { likeCount: newlikeCount + 1 });
-                    transaction.set(likeDocRef, { userId: currentUser.uid });
+                    transaction.update(dealDocRef, { likeCount: dbLikeCount + 1 });
+                    transaction.set(likeDocRef, { userId: currentUser.uid, createdAt: new Date() });
                 }
             });
             // Le onSnapshot dans useEffect mettra à jour l'UI automatiquement.
         } catch (error) {
             console.error("Erreur de transaction de like:", error);
-            setAlert("Une erreur est survenue lors du like.", "error");
+            setAlert(typeof error === 'string' ? error : "Erreur lors de l'interaction.", "error");
         }
     };
 
