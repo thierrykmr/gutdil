@@ -5,6 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { DEAL_CATEGORIES } from '../constants/index';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
+import { generateSearchIndex } from '../utils/searchHelper';
 
 function CreateDeal({ onDealPosted }) {
   const [category, setCategory] = useState('');
@@ -67,6 +68,10 @@ function CreateDeal({ onDealPosted }) {
       // 1. Référence à la collection "deals"
       const dealsCollectionRef = collection(db, 'deals');
 
+      // --- AJOUT DE L'INDEX DE RECHERCHE ---
+      // On génère la liste des mots-clés à partir du titre et de la description
+      const searchIndex = generateSearchIndex(title, description);
+
       // 2. Ajout du document
       await addDoc(dealsCollectionRef, {
         title: title,
@@ -75,6 +80,7 @@ function CreateDeal({ onDealPosted }) {
         price: parseFloat(price) || 0, // Convertit en nombre
         link: link,
         imageUrl: imageUrl,
+        searchIndex: searchIndex, // Stocke les mots-clés pour la recherche
         createdAt: serverTimestamp(),
         authorId: currentUser.uid, 
         authorEmail: currentUser.email,

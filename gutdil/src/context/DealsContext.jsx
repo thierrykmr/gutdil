@@ -8,6 +8,8 @@ export const DealsProvider = ({ children }) => {
     const [hasMore, setHasMore] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [scrollPosition, setScrollPosition] = useState(0);
+    //  AJOUT DE L'ÉTAT DE RECHERCHE
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Fonction pour réinitialiser si on change de catégorie
     const resetDeals = () => {
@@ -22,6 +24,7 @@ export const DealsProvider = ({ children }) => {
             lastVisible, setLastVisible, 
             hasMore, setHasMore,
             selectedCategory, setSelectedCategory,
+            searchQuery, setSearchQuery,
             scrollPosition, setScrollPosition,
             resetDeals
         }}>

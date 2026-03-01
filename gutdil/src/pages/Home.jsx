@@ -2,9 +2,10 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useDeals } from '../context/DealsContext'; // Import du contexte
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebaseConfig';
+import { auth} from '../firebaseConfig';
 import { signOut } from 'firebase/auth';
 import FilterBar from '../components/FilterBar';
+import SearchBar from '../components/SearchBar';
 
 import CreateDeal from '../components/CreateDeal';
 import Modal from '../components/Modal';
@@ -14,7 +15,8 @@ function Home() {
   const { currentUser } = useAuth();
   const { 
     selectedCategory, 
-    setSelectedCategory, 
+    setSelectedCategory,
+    setSearchQuery, 
     scrollPosition, 
     setScrollPosition 
   } = useDeals(); // Utilisation du contexte global
@@ -62,6 +64,9 @@ function Home() {
     <>
       <div className="max-w-6xl mx-auto p-4 md:p-8 text-white">
         
+        {/* LA BARRE DE RECHERCHE EST TOUT EN HAUT */}
+        <SearchBar />
+
         <header className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">
             Les derniers Bons Plans

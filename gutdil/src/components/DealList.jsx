@@ -10,7 +10,8 @@ function DealList() {
     deals, setDeals, 
     lastVisible, setLastVisible, 
     hasMore, setHasMore,
-    selectedCategory 
+    selectedCategory,
+    searchQuery 
   } = useDeals();
 
   const [loading, setLoading] = useState(false);
@@ -29,14 +30,40 @@ function DealList() {
       
       setError(null);
 
-      let dealsQuery = query(
-        collection(db, 'deals'),
-        orderBy('createdAt', 'desc'),
-        limit(DEALS_PER_PAGE)
-      );
+      // --- LOGIQUE DE REQUÊTE HYBRIDE (RECHERCHE + CATÉGORIE) ---
+      let q = collection(db, 'deals');
+      let dealsQuery;
 
-      if (selectedCategory) {
-        dealsQuery = query(dealsQuery, where('category', '==', selectedCategory));
+      if (searchQuery) {
+        if (selectedCategory) {
+          // RECHERCHE DANS UNE CATÉGORIE PRÉCISE
+          dealsQuery = query(
+            q, 
+            where('category', '==', selectedCategory),
+            where('searchIndex', 'array-contains', searchQuery), 
+            orderBy('createdAt', 'desc'), 
+            limit(DEALS_PER_PAGE)
+          );
+        } else {
+          // RECHERCHE GLOBALE (Toutes catégories)
+          dealsQuery = query(
+            q, 
+            where('searchIndex', 'array-contains', searchQuery), 
+            orderBy('createdAt', 'desc'), 
+            limit(DEALS_PER_PAGE)
+          );
+        }
+      } else if (selectedCategory) {
+        // CATÉGORIE SEULE
+        dealsQuery = query(
+          q, 
+          where('category', '==', selectedCategory), 
+          orderBy('createdAt', 'desc'), 
+          limit(DEALS_PER_PAGE)
+        );
+      } else {
+        // MODE PAR DÉFAUT
+        dealsQuery = query(q, orderBy('createdAt', 'desc'), limit(DEALS_PER_PAGE));
       }
 
       if (isNextPage && lastVisible) {
@@ -69,17 +96,14 @@ function DealList() {
 
   // Logique de chargement intelligente
   useEffect(() => {
-    // Si on change de catégorie, on doit réinitialiser et charger
-    // Ou si c'est le tout premier chargement (deals vides)
-    const shouldReset = deals.length > 0 && deals[0].category !== selectedCategory && selectedCategory !== '';
+    // On réinitialise le curseur de pagination
+    setLastVisible(null);
     
-    if (deals.length === 0 || shouldReset) {
-      setLastVisible(null);
-      fetchDeals(false);
-    }
-    // Si deals.length > 0 et qu'on revient d'une page détail, 
-    // l'useEffect ne fait rien, préservant la liste et le scroll.
-  }, [selectedCategory]);
+    // On lance le chargement initial (remplacement de la liste)
+    fetchDeals(false);
+
+    // On ne met QUE selectedCategory et searchQuery en dépendances
+  }, [selectedCategory, searchQuery]);
 
   if (loading && deals.length === 0) {
     return (
@@ -95,7 +119,7 @@ function DealList() {
       
       {deals.length === 0 && !loading ? (
         <div className="bg-gray-800/50 border border-gray-700 p-8 rounded-xl text-center text-gray-400 py-16">
-          Aucun deal trouvé.
+          {searchQuery ? `Aucun résultat pour "${searchQuery}"` : "Aucun deal trouvé."}
         </div>
       ) : (
         <>
