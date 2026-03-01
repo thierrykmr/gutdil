@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { useDeals } from '../context/DealsContext';
 
 function SearchBar() {
-  const { setSearchQuery, resetDeals } = useDeals();
+  const { searchQuery, setSearchQuery, resetDeals } = useDeals();
   const [inputValue, setInputValue] = useState('');
+
 
   const handleSearch = (e) => {
     e.preventDefault();
     const term = inputValue.trim().toLowerCase();
+
+    // Si l'utilisateur appuie sur Entrée avec le même mot, on ne fait rien
+    if (term === searchQuery) return;
+
     resetDeals(); // Vide la liste actuelle pour la nouvelle recherche
     setSearchQuery(term);
   };

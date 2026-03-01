@@ -26,6 +26,7 @@ export const DealsProvider = ({ children }) => {
             selectedCategory, setSelectedCategory,
             searchQuery, setSearchQuery,
             scrollPosition, setScrollPosition,
+            searchQuery, setSearchQuery,
             resetDeals
         }}>
             {children}
