@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom'; // Pour afficher les pages enfants
 import Navbar from './components/Navbar';
 import Alert from './components/Alert'; 
+import Footer from './components/Footer';
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
       <main>
         <Outlet />
       </main>
+      {/* 3. Un footer simple */}
+      <Footer />
     </div>
   );
 }

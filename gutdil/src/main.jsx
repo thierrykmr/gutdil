@@ -14,6 +14,7 @@ import Auth from './pages/Auth.jsx';
 import Home from './pages/Home.jsx';
 import DealDetail from './pages/DealDetail.jsx';
 import EditDealPage from './pages/EditDealPage.jsx';
+import Contact from './pages/Contact.jsx';
 
 import Alert from './components/Alert.jsx';
 import { DealsProvider } from './context/DealsContext.jsx';
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: 'edit-deal/:dealId', 
         element: <EditDealPage />,
+      },
+      {
+        path: 'contact',
+        element: <Contact/>,
       }
 
     ],

@@ -111,7 +111,7 @@ function Navbar() {
           
           {/* Partie Gauche: Logo et Liens (Bureau) */}
           <div className="flex items-center space-x-6">
-            <Link to="/" className="text-xl font-bold text-cyan-400">
+            <Link to="/home" className="text-xl font-bold text-cyan-400">
               Gutdil
             </Link>
             
