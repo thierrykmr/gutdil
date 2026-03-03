@@ -96,14 +96,16 @@ function DealList() {
 
   // Logique de chargement intelligente
   useEffect(() => {
-    // On réinitialise le curseur de pagination
-    setLastVisible(null);
+    // Si la liste est vide (suite à un resetDeals), on s'assure de recharger proprement
+    if (deals.length === 0) {
+      setLastVisible(null); //
+    }
     
     // On lance le chargement initial (remplacement de la liste)
     fetchDeals(false);
 
-    // On ne met QUE selectedCategory et searchQuery en dépendances
-  }, [selectedCategory, searchQuery]);
+    // on met selectedCategory et searchQuery en dépendances et on ajoute deals.length pour que resetDeals() déclenche ce useEffect
+  }, [selectedCategory, searchQuery, deals.length]);
 
   if (loading && deals.length === 0) {
     return (

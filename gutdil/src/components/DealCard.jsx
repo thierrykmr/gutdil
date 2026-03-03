@@ -10,6 +10,8 @@ import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 import Modal from './Modal';
 
+import { useDeals } from '../context/DealsContext'; // Import du contexte pour réinitialiser la liste des deals
+
 // Fonction utilitaire simple pour formater la date
 const formatDate = (timestamp) => {
     if (!timestamp) return "Date inconnue";
@@ -141,6 +143,7 @@ function DealCard({ deal }) {
             await deleteDoc(doc(db, 'deals', deal.id));
             
             setAlert("Le bon plan et son image ont été supprimés.", "success");
+            resetDeals(); // Réinitialise la liste des deals pour forcer le rechargement
             setIsDeleteModalOpen(false);
         } catch (error) {
             console.error("Erreur suppression:", error);

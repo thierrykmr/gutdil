@@ -6,6 +6,7 @@ import { DEAL_CATEGORIES } from '../constants/index';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 import { generateSearchIndex } from '../utils/searchHelper';
+import { useDeals } from '../context/DealsContext'; // Import du contexte pour réinitialiser la liste des deals
 
 function CreateDeal({ onDealPosted }) {
   const [category, setCategory] = useState('');
@@ -21,6 +22,8 @@ function CreateDeal({ onDealPosted }) {
 
   const { currentUser } = useAuth(); // On récupère l'utilisateur connecté
   const { setAlert } = useAlert(); // Pour afficher les alertes globales
+
+  const { resetDeals } = useDeals(); // Import de la fonction pour réinitialiser la liste des deals 
 
 
   // Gérer la sélection du fichier
@@ -51,7 +54,7 @@ function CreateDeal({ onDealPosted }) {
 
     let imageUrl = null;
 
-    console.log("Posting deal:", { title, description, price, link });
+    console.log("Posting deal:", { category, title, description, price, link });
 
     try {
 
@@ -91,6 +94,7 @@ function CreateDeal({ onDealPosted }) {
 
       // 3. Succès
       setAlert("Bon plan posté avec succès !", "success");
+      resetDeals(); // Réinitialise la liste des deals pour forcer le rechargement
       setLoading(false);
       
       // 4. Vider le formulaire
