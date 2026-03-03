@@ -100,7 +100,7 @@ function EditDealPage() {
             await updateDoc(dealDocRef, updatedFields); // Mise à jour Firestore
 
             setAlert("Deal mis à jour avec succès !", "success");
-            navigate(`/deals/${dealId}`); // Rediriger vers la page de détail
+            navigate(`/home`); // Rediriger vers la page de détail
 
         } catch (error) {
             console.error("Erreur de mise à jour:", error);
@@ -117,13 +117,20 @@ function EditDealPage() {
 
     return (
         <div className="max-w-lg mx-auto p-4 md:p-8 text-white">
+            <button 
+                onClick={() => navigate(-1)} // Retour à la page précédente
+                className="text-cyan-400 hover:underline mb-4 flex items-center gap-2"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+                Retour aux deals
+            </button>
             <h1 className="text-xl font-bold mb-6">Modifier le deal: {deal.title}</h1>
             <form onSubmit={handleSubmit} className="space-y-4 bg-gray-800 p-6 rounded-lg shadow-xl">
                 
                 {/* Champ Catégorie (similaire à CreateDeal) */}
                 <div>
                   <label htmlFor="category" className="block text-sm font-medium text-gray-300 mb-1">
-                    Catégorie
+                    Catégorie *
                   </label>
                   <div className="relative"> 
                     <select
@@ -145,21 +152,21 @@ function EditDealPage() {
 
                 {/* Champ Titre */}
                 <div>
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">Titre</label>
+                    <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">Titre *</label>
                     <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} required 
                            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
                 </div>
                 
                 {/* Champ Description */}
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                    <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows="4" 
+                    <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">Description *</label>
+                    <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows="4" required
                               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
                 </div>
 
                 {/* Champ Image (affichage de l'ancienne image) */}
                 <div>
-                    <label htmlFor="newImage" className="block text-sm font-medium text-gray-300 mb-1">Nouvelle Image (Optionnel)</label>
+                    <label htmlFor="newImage" className="block text-sm font-medium text-gray-300 mb-1">Nouvelle Image (Optionnelle)</label>
                     {deal.imageUrl && !newImageFile && (
                         <p className="text-sm text-gray-400 mb-2">Image actuelle : <img src={deal.imageUrl} alt="Deal" className="h-16 w-auto inline-block ml-2 rounded" /></p>
                     )}
@@ -171,13 +178,13 @@ function EditDealPage() {
 
                 {/* Champs Prix et Lien */}
                 <div className="flex gap-4">
-                    <div className="flex-1">
+                    {/* <div className="flex-1">
                         <label htmlFor="price" className="block text-sm font-medium text-gray-300 mb-1">Prix</label>
                         <input id="price" type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)}
                                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
-                    </div>
+                    </div> */}
                     <div className="flex-grow">
-                        <label htmlFor="link" className="block text-sm font-medium text-gray-300 mb-1">Lien</label>
+                        <label htmlFor="link" className="block text-sm font-medium text-gray-300 mb-1">Lien vers le deal (Optionnel) </label>
                         <input id="link" type="url" value={link} onChange={(e) => setLink(e.target.value)}  
                                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
                     </div>

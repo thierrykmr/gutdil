@@ -107,12 +107,12 @@ useEffect(() => {
           <img src={deal.imageUrl} alt={deal.title} className="w-full max-h-96 object-contain rounded-lg mb-6 bg-gray-700" />
         )}
 
-        <div className="flex justify-between items-center border-b border-gray-700 pb-3 mb-4">
+        {/* <div className="flex justify-between items-center border-b border-gray-700 pb-3 mb-4">
             <span className="text-4xl font-bold text-white">{deal.price} €</span>
             <span className="px-3 py-1 rounded-full bg-violet-600/30 text-violet-300 font-semibold">
                 {deal.category}
             </span>
-        </div>
+        </div> */}
 
         <h2 className="text-xl font-bold mt-6 mb-2 text-gray-200">Description Complète</h2>
         <p className="text-gray-400 whitespace-pre-wrap">{deal.description}</p>

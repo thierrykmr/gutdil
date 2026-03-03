@@ -7,7 +7,7 @@ function Footer() {
         <footer className="bg-gray-900 border-t border-gray-800 pt-10 pb-6 mt-16">
             <div className="max-w-6xl mx-auto px-6">
                 
-                {/* Grille principale : 1 colonne sur mobile, 4 sur grand écran */}
+                {/* Grille principale : 1 colonne sur mobile, 3 sur grand écran */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-10 text-center sm:text-left">
                     
                     {/* Section Marque */}

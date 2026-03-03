@@ -236,12 +236,12 @@ function DealCard({ deal }) {
                     </p>
 
                     {/* Prix et Bouton de Lien */}
-                    <div className="flex justify-between items-end pt-2">
+                    {/* <div className="flex justify-between items-end pt-2">
                         <span className="text-3xl font-extrabold text-cyan-400">
                             {deal.price} €
                         </span>
                         
-                    </div>
+                    </div> */}
                     
                     {/* NOUVEAU: Espace pour les interactions (Likes & Commentaires) */}
                     <div className="pt-2 flex justify-start items-center space-x-4 border-t border-gray-700 mt-2">

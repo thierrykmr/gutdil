@@ -122,7 +122,7 @@ function CreateDeal({ onDealPosted }) {
         
         <div>
           <label htmlFor="category" className="block text-sm font-medium text-gray-300 mb-1">
-            Catégorie
+            Catégorie *
           </label>
           <select
             id="category"
@@ -140,7 +140,7 @@ function CreateDeal({ onDealPosted }) {
 
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
-            Titre du deal
+            Titre du deal *
           </label>
           <input 
             id="title" type="text" value={title}
@@ -152,11 +152,12 @@ function CreateDeal({ onDealPosted }) {
         
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">
-            Description
+            Description *
           </label>
           <textarea 
             id="description" value={description}
             onChange={(e) => setDescription(e.target.value)} 
+            required
             rows="3" placeholder="Donnez plus de détails..."
             className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
           />
@@ -164,7 +165,7 @@ function CreateDeal({ onDealPosted }) {
 
         <div>
           <label htmlFor="image" className="block text-sm font-medium text-gray-300 mb-1">
-            Image du deal (Optionnel)
+            Image du deal (Optionnelle)
           </label>
           <input 
             id="image" type="file" accept="image/*"
@@ -179,7 +180,7 @@ function CreateDeal({ onDealPosted }) {
         </div>
 
         <div className="flex gap-4">
-          <div className="flex-1">
+          {/* <div className="flex-1">
             <label htmlFor="price" className="block text-sm font-medium text-gray-300 mb-1">
               Prix
             </label>
@@ -189,10 +190,10 @@ function CreateDeal({ onDealPosted }) {
               optional='true' placeholder="100.00"
               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
-          </div>
+          </div> */}
           <div className="flex-grow">
             <label htmlFor="link" className="block text-sm font-medium text-gray-300 mb-1">
-              Lien
+              Lien vers le deal (Optionnel)
             </label>
             <input 
               id="link" type="url" value={link}
