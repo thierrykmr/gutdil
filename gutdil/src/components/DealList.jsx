@@ -11,7 +11,8 @@ function DealList() {
     lastVisible, setLastVisible, 
     hasMore, setHasMore,
     selectedCategory,
-    searchQuery 
+    searchQuery,
+    refreshTrigger 
   } = useDeals();
 
   const [loading, setLoading] = useState(false);
@@ -105,7 +106,7 @@ function DealList() {
     fetchDeals(false);
 
     // on met selectedCategory et searchQuery en dépendances et on ajoute deals.length pour que resetDeals() déclenche ce useEffect
-  }, [selectedCategory, searchQuery, deals.length]);
+  }, [selectedCategory, searchQuery, refreshTrigger]);
 
   if (loading && deals.length === 0) {
     return (

@@ -10,12 +10,14 @@ export const DealsProvider = ({ children }) => {
     const [scrollPosition, setScrollPosition] = useState(0);
     //  AJOUT DE L'ÉTAT DE RECHERCHE
     const [searchQuery, setSearchQuery] = useState('');
+    const [refreshTrigger, setRefreshTrigger] = useState(0); // Nouvel état pour forcer le rafraîchissement
 
     // Fonction pour réinitialiser si on change de catégorie
     const resetDeals = () => {
         setDeals([]);
         setLastVisible(null);
         setHasMore(true);
+        setRefreshTrigger(prev => prev + 1); // Incrémente pour forcer le useEffect à se réexécuter
     };
 
     return (
