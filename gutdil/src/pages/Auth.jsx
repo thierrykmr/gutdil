@@ -98,43 +98,46 @@ function Auth() {
         </div>
 
         {/* Formulaire Email */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-              Email
-            </label>
-            <input 
-              id="email" type="email" value={email}
-              onChange={(e) => setEmail(e.target.value)} 
-              required placeholder="votre@email.com"
-              autoComplete='email'
-              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-              Mot de passe
-            </label>
-            <input 
-              id="password" type="password" value={password}
-              onChange={(e) => setPassword(e.target.value)} 
-              required placeholder="••••••••" autoComplete="current-password"
-              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
-          </div>
-          
-          {error && (
-            <p className="text-sm text-red-400 bg-red-900/50 p-3 rounded-md border border-red-800" role="alert">
-              {error}
-            </p>
-          )}
-          
-          <button type="submit" className="w-full p-3 rounded-md bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold hover:opacity-90 transition-opacity">
-            {isLogin ? 'Se connecter' : "S'inscrire"}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                Email
+              </label>
+              <input 
+                id="email" type="email" value={email}
+                onChange={(e) => setEmail(e.target.value)} 
+                required placeholder="votreadresse@email.com"
+                autoComplete='email'
+                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+                Mot de passe
+              </label>
+              <input 
+                id="password" type="password" value={password}
+                onChange={(e) => setPassword(e.target.value)} 
+                required placeholder="••••••••" autoComplete="current-password"
+                // pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$"
+                // title="Minimum 8 caractères, dont au moins une lettre, un chiffre et un caractère spécial (!@#$%^&*)"
+                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+              {/* <p className="text-xs text-gray-400 mt-1">Min. 8 caractères, 1 lettre, 1 chiffre, 1 caractère spécial</p> */}
+            </div>
+            
+            {error && (
+              <p className="text-sm text-red-400 bg-red-900/50 p-3 rounded-md border border-red-800" role="alert">
+                {error}
+              </p>
+            )}
+            
+            <button type="submit" className="w-full p-3 rounded-md bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold hover:opacity-90 transition-opacity">
+              {isLogin ? 'Se connecter' : "S'inscrire"}
+            </button>
+          </form>
 
-        {/* Séparateur */}
+          {/* Séparateur */}
         <div className="flex items-center my-4">
           <div className="flex-grow border-t border-gray-700"></div>
           <span className="mx-2 text-xs font-semibold text-gray-500">OU</span>

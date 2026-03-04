@@ -1,5 +1,3 @@
-// src/components/CommentList.jsx
-
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';

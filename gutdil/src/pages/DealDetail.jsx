@@ -4,7 +4,7 @@ import { db } from '../firebaseConfig';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore'; 
 import { useAuth } from '../context/AuthContext';
 
-import CommentList from '../components/CommonList';
+import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
 
 
@@ -101,7 +101,7 @@ useEffect(() => {
       </button>
 
       <div className="bg-gray-800 p-6 rounded-xl shadow-2xl">
-        <h1 className="text-4xl font-extrabold mb-4 text-cyan-400">{deal.title}</h1>
+        <h1 className="text-3xl font-bold mb-4 text-cyan-400">{deal.title}</h1>
         
         {deal.imageUrl && (
           <img src={deal.imageUrl} alt={deal.title} className="w-full max-h-96 object-contain rounded-lg mb-6 bg-gray-700" />
