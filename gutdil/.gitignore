@@ -11,8 +11,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-src/pages/NotFound.jsx
-src/main.jsx
 
 node_modules
 dist
