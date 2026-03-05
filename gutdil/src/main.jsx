@@ -18,6 +18,7 @@ import Contact from './pages/Contact.jsx';
 
 import Alert from './components/Alert.jsx';
 import { DealsProvider } from './context/DealsContext.jsx';
+import NotFound from './pages/NotFound.jsx';
 
 //definition des routes
 const router = createBrowserRouter([
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <Contact/>,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       }
 
     ],
