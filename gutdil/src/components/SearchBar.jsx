@@ -37,7 +37,7 @@ function SearchBar() {
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Rechercher un produit, une marque..."
+          placeholder="Rechercher un bon plan, une information..."
           className="w-full bg-gray-800/50 border border-gray-700 text-white pl-12 pr-12 py-4 rounded-2xl 
                      focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 outline-none 
                      transition-all text-lg backdrop-blur-sm shadow-xl"
