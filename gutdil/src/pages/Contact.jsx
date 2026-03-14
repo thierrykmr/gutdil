@@ -10,20 +10,20 @@ function Contact() {
   const { setAlert } = useAlert();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  // Gardien de sécurité : Redirection si non connecté
-  useEffect(() => {
-    if (!currentUser) {
-      navigate('/connexion');
-    }
-  }, [currentUser, navigate]);
+  // La page Contact est accessible à tous ; l'envoi nécessite une connexion.
 
   const sendEmail = (e) => {
     e.preventDefault();
+    // Si l'utilisateur n'est pas connecté, on affiche une alerte et on redirige
+    if (!currentUser) {
+      setAlert('Veuillez vous connecter pour envoyer un message.', 'error');
+      //navigate('/connexion');
+      return;
+    }
     setLoading(true);
 
     // On prépare les variables pour le template EmailJS
-    // Note : {{email}} et {{title}} doivent être présents dans ton template en ligne
+    // {{email}} et {{title}} doivent être présents dans ton template en ligne
     const templateParams = {
       title: form.current.title.value,
       message: form.current.message.value,
@@ -48,8 +48,6 @@ function Contact() {
     .finally(() => setLoading(false));
   };
 
-  if (!currentUser) return null;
-
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-10 border border-gray-700">
@@ -57,7 +55,11 @@ function Contact() {
           Contactez nous
         </h1>
         <p className="text-gray-400 mb-8 text-sm">
-          Connecté en tant que : <span className="text-cyan-400">{currentUser.email}</span>
+          {currentUser ? (
+            <>Connecté en tant que : <span className="text-cyan-400">{currentUser.email}</span></>
+          ) : (
+            <>Vous devez vous connecter pour envoyer un message.</>
+          )}
         </p>
 
         <form ref={form} onSubmit={sendEmail} className="space-y-6">

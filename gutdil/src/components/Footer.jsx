@@ -1,21 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useAlert } from '../context/AlertContext';
+import { Link} from 'react-router-dom';
 
 function Footer() {
     const currentYear = new Date().getFullYear();
 
-    const navigate = useNavigate();
-    const { currentUser } = useAuth();
-    const { setAlert } = useAlert();
-
-    const handleContactClick = (e) => {
-        if (!currentUser) {
-            e.preventDefault();
-            setAlert('Veuillez vous connecter pour accéder à la page Contact.', 'error');
-            navigate('/connexion');
-        }
-    };
 
     return (
         <footer className="bg-gray-900 border-t border-gray-800 pt-10 pb-6 mt-16">
@@ -40,7 +27,7 @@ function Footer() {
                         <ul className="space-y-3 text-gray-400 text-sm font-medium">
                             <li><Link to="/" className="hover:text-cyan-400 transition-colors">Mentions légales</Link></li>
                             <li><Link to="/" className="hover:text-cyan-400 transition-colors">Confidentialité</Link></li>
-                            <li><Link to="/contact" onClick={handleContactClick} className="hover:text-cyan-400 transition-colors">Contact</Link></li>
+                            <li><Link to="/contact" className="hover:text-cyan-400 transition-colors">Contact</Link></li>
                         </ul>
                     </div>
 
