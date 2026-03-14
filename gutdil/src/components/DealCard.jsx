@@ -12,6 +12,8 @@ import Modal from './Modal';
 
 import { useDeals } from '../context/DealsContext'; // Import du contexte pour réinitialiser la liste des deals
 
+import { analytics, logEvent } from '../firebaseConfig';
+
 // Fonction utilitaire simple pour formater la date
 const formatDate = (timestamp) => {
     if (!timestamp) return "Date inconnue";
@@ -27,6 +29,8 @@ const formatDate = (timestamp) => {
 
 function DealCard({ deal }) {
     const { currentUser } = useAuth();
+
+        const { resetDeals } = useDeals();
 
     const [hasLiked, setHasLiked] = useState(false); // Etat pour savoir si l'utilisateur a déjà liké
 
@@ -45,6 +49,15 @@ function DealCard({ deal }) {
     // État pour gérer l'ouverture du modal 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleDealClick = () => {
+        logEvent(analytics, 'view_deal', {
+            deal_id: deal.id,
+            deal_title: deal.title,
+            category: deal.category
+        });
+    };
+
 
     useEffect(() => {
           if (!currentUser) {
@@ -143,7 +156,7 @@ function DealCard({ deal }) {
             await deleteDoc(doc(db, 'deals', deal.id));
             
             setAlert("Le bon plan et son image ont été supprimés.", "success");
-            resetDeals(); // Réinitialise la liste des deals pour forcer le rechargement
+                if (typeof resetDeals === 'function') resetDeals(); // Réinitialise la liste des deals pour forcer le rechargement
             setIsDeleteModalOpen(false);
         } catch (error) {
             console.error("Erreur suppression:", error);
@@ -156,7 +169,7 @@ function DealCard({ deal }) {
     return (
         <>
             <Link 
-            to={`/deals/${deal.id}`} 
+            to={`/deals/${deal.id}`} onClick={handleDealClick}
             className="block bg-gray-800 rounded-xl shadow-lg overflow-hidden transition duration-200 ease-in-out transform hover:scale-[1.02] hover:shadow-2xl group"
             >
                 {isOwner && (

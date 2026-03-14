@@ -7,7 +7,8 @@ import { useDeals } from '../context/DealsContext'; // Import du contexte
 function DealList() {
   // On récupère tout du contexte global
   const { 
-    deals, setDeals, 
+    deals, setDeals,
+    loading, setLoading, 
     lastVisible, setLastVisible, 
     hasMore, setHasMore,
     selectedCategory,
@@ -15,7 +16,6 @@ function DealList() {
     refreshTrigger 
   } = useDeals();
 
-  const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
 
@@ -97,10 +97,8 @@ function DealList() {
 
   // Logique de chargement intelligente
   useEffect(() => {
-    // Si la liste est vide (suite à un resetDeals), on s'assure de recharger proprement
-    if (deals.length === 0) {
-      setLastVisible(null); //
-    }
+
+      setLastVisible(null);
     
     // On lance le chargement initial (remplacement de la liste)
     fetchDeals(false);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { db, auth, storage } from '../firebaseConfig'; // Importez la BDD et l'auth
+import { db, auth, storage } from '../firebaseConfig'; // Import de la BDD et du stockage
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { DEAL_CATEGORIES } from '../constants/index';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 import { generateSearchIndex } from '../utils/searchHelper';
 import { useDeals } from '../context/DealsContext'; // Import du contexte pour réinitialiser la liste des deals
+import { analytics, logEvent } from '../firebaseConfig'; // Import de l'analytics et de la fonction logEvent
 
 function CreateDeal({ onDealPosted }) {
   const [category, setCategory] = useState('');
@@ -92,9 +93,14 @@ function CreateDeal({ onDealPosted }) {
         //commentCount: 0,
       });
 
+      logEvent(analytics, 'create_deal', {
+        category: category,
+        title: title,
+        has_image: !!imageUrl //pour savoir si les gens mettent les images ou pas
+      });
+
       // 3. Succès
       setAlert("Bon plan posté avec succès !", "success");
-      resetDeals(); // Réinitialise la liste des deals pour forcer le rechargement
       setLoading(false);
       
       // 4. Vider le formulaire
@@ -104,6 +110,7 @@ function CreateDeal({ onDealPosted }) {
       setPrice('');
       setLink('');
       setImageFile(null);
+      if (typeof resetDeals === 'function') resetDeals();
 
       // Attendre 1 seconde (pour lire le message) puis appeler la fonction pour fermer le modal.
       setTimeout(() => {
