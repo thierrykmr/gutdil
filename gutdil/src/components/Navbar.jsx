@@ -124,6 +124,9 @@ function Navbar() {
               <Link to="/a-propos" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
                 À Propos
               </Link>
+              <Link to="/contact" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+                Contact
+              </Link>
             </div>
           </div>
 
@@ -187,6 +190,13 @@ function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)} // Ferme le menu au clic
             >
               À Propos
+            </Link>
+            <Link
+              to="/contact"
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+              onClick={() => setIsMobileMenuOpen(false)} // Ferme le menu au clic
+            >
+              Contact
             </Link>
             
             {/* Séparateur pour les actions d'authentification */}
