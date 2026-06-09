@@ -90,4 +90,9 @@ describe('DealCard', () => {
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', '/deals/deal-1');
   });
+
+  it('renders share button', () => {
+    renderDealCard();
+    expect(screen.getByLabelText('Partager ce deal')).toBeInTheDocument();
+  });
 });

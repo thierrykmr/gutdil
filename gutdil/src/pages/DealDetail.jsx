@@ -5,6 +5,8 @@ import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
+import { shareDeal } from '../utils/shareHelper';
+import { useAlert } from '../context/AlertContext';
 
 
 function DealDetail() {
@@ -12,6 +14,7 @@ function DealDetail() {
   const { dealId } = useParams(); 
 
   const navigate = useNavigate();
+  const { setAlert } = useAlert();
 
   const [deal, setDeal] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -102,15 +105,26 @@ useEffect(() => {
         <h2 className="text-xl font-bold mt-6 mb-2 text-slate-800">Description Complète</h2>
         <p className="text-slate-600 whitespace-pre-wrap leading-relaxed">{deal.description}</p>
         
-        <div className="mt-8 pt-4 border-t border-sky-100 flex justify-between items-center">
+        <div className="mt-8 pt-4 border-t border-sky-100 flex justify-between items-center gap-3">
             <span className="text-sm text-slate-400 font-medium">Posté par {deal.authorEmail}</span>
-            { deal.link ? (<a
-                href={deal.link}
-                target="_blank"
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-base hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95"
-            >
-                Voir le deal
-            </a>) : null }
+            <div className="flex gap-3">
+                <button
+                    onClick={() => shareDeal(deal, setAlert)}
+                    className="px-4 py-2.5 rounded-xl border border-sky-200 text-sky-600 font-bold text-base hover:bg-sky-50 transition-all flex items-center gap-2 active:scale-95"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 00 2.25 2.25h9a2.25 2.25 0 00 2.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
+                    </svg>
+                    Partager
+                </button>
+                { deal.link ? (<a
+                    href={deal.link}
+                    target="_blank"
+                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-base hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95"
+                >
+                    Voir le deal
+                </a>) : null }
+            </div>
         </div>
         { deal.commentCount > 0 ?
             (<div className="mt-8 pt-4 border-t border-sky-100 flex justify-between items-center">

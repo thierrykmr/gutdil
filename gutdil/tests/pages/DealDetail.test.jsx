@@ -17,6 +17,9 @@ vi.mock('react-router-dom', async () => {
 vi.mock('../../src/context/AuthContext', () => ({
   useAuth: vi.fn(),
 }));
+vi.mock('../../src/context/AlertContext', () => ({
+  useAlert: () => ({ setAlert: vi.fn() }),
+}));
 vi.mock('../../src/components/CommentList', () => ({
   default: function MockCommentList() {
     return <div data-testid="comment-list">Comments</div>;
@@ -70,5 +73,6 @@ describe('DealDetail', () => {
       expect(screen.getByText('Super Deal')).toBeInTheDocument();
     });
     expect(screen.getByTestId('comment-list')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Partager' })).toBeInTheDocument();
   });
 });

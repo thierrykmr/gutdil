@@ -9,6 +9,7 @@ import { db, storage } from '../firebaseConfig';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 import Modal from './Modal';
+import { shareDeal } from '../utils/shareHelper';
 
 import { useDeals } from '../context/DealsContext'; // Import du contexte pour réinitialiser la liste des deals
 
@@ -263,6 +264,22 @@ function DealCard({ deal }) {
                         >
                             <span className="text-base mr-1">💬</span>
                             {currentCommentCount}
+                        </button>
+
+                        {/* Bouton de Partage */}
+                        <button 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                shareDeal(deal, setAlert);
+                            }}
+                            className="flex items-center text-sm font-bold text-slate-400 hover:text-sky-600 hover:bg-sky-50/50 px-2.5 py-1 rounded-lg transition-all"
+                            aria-label="Partager ce deal"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 mr-1">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 00 2.25 2.25h9a2.25 2.25 0 00 2.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
+                            </svg>
+                            <span>Partager</span>
                         </button>
 
                     </div>
