@@ -105,12 +105,12 @@ useEffect(() => {
         <h2 className="text-xl font-bold mt-6 mb-2 text-slate-800">Description Complète</h2>
         <p className="text-slate-600 whitespace-pre-wrap leading-relaxed">{deal.description}</p>
         
-        <div className="mt-8 pt-4 border-t border-sky-100 flex justify-between items-center gap-3">
+        <div className="mt-8 pt-4 border-t border-sky-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <span className="text-sm text-slate-400 font-medium">Posté par {deal.authorEmail}</span>
-            <div className="flex gap-3">
+            <div className="flex gap-3 w-full sm:w-auto">
                 <button
                     onClick={() => shareDeal(deal, setAlert)}
-                    className="px-4 py-2.5 rounded-xl border border-sky-200 text-sky-600 font-bold text-base hover:bg-sky-50 transition-all flex items-center gap-2 active:scale-95"
+                    className="flex-1 sm:flex-none justify-center px-4 py-2 rounded-xl border border-sky-200 text-sky-600 font-semibold text-sm hover:bg-sky-50 transition-all flex items-center gap-2 active:scale-95 whitespace-nowrap"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 00 2.25 2.25h9a2.25 2.25 0 00 2.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
@@ -120,7 +120,7 @@ useEffect(() => {
                 { deal.link ? (<a
                     href={deal.link}
                     target="_blank"
-                    className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-base hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95"
+                    className="flex-1 sm:flex-none justify-center text-center px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95 whitespace-nowrap"
                 >
                     Voir le deal
                 </a>) : null }
