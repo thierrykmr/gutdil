@@ -119,7 +119,7 @@ function DealList() {
       {error && <p className="text-red-400 text-center py-4">{error}</p>}
       
       {deals.length === 0 && !loading ? (
-        <div className="bg-gray-800/50 border border-gray-700 p-8 rounded-xl text-center text-gray-400 py-16">
+        <div className="bg-white border border-sky-100/80 p-8 rounded-2xl text-center text-slate-500 py-16 shadow-lg shadow-sky-100/10">
           {searchQuery ? `Aucun résultat pour "${searchQuery}"` : "Aucun deal trouvé."}
         </div>
       ) : (
@@ -135,13 +135,13 @@ function DealList() {
               <button
                 onClick={() => fetchDeals(true)}
                 disabled={loadingMore}
-                className="group relative px-8 py-3 bg-gray-800 border border-gray-700 text-cyan-400 font-bold rounded-xl 
-                           hover:bg-gray-700 hover:border-cyan-500/50 transition-all active:scale-95
-                           disabled:opacity-50 flex items-center gap-3 overflow-hidden shadow-xl"
+                className="group relative px-8 py-3 bg-white border border-sky-100 text-sky-600 font-bold rounded-xl 
+                           hover:bg-sky-50 hover:border-sky-350 transition-all active:scale-95
+                           disabled:opacity-50 flex items-center gap-3 overflow-hidden shadow-md shadow-sky-100/10"
               >
                 {loadingMore ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-5 h-5 border-2 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
                     <span>Chargement...</span>
                   </>
                 ) : (
@@ -158,8 +158,8 @@ function DealList() {
 
           {!hasMore && deals.length > 0 && (
             <div className="flex flex-col items-center gap-2 pb-20">
-              <div className="w-10 h-px bg-gray-700"></div>
-              <p className="text-gray-500 text-sm italic">C'est tout pour le moment !</p>
+              <div className="w-10 h-px bg-sky-200"></div>
+              <p className="text-slate-400 text-sm italic font-medium">C'est tout pour le moment !</p>
             </div>
           )}
         </>

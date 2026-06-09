@@ -35,25 +35,25 @@ function CommentList({ dealId }) {
     return () => unsubscribe();
   }, [dealId]);
 
-  if (loading) return <p className="text-gray-500 text-sm mt-4">Chargement des discussions...</p>;
+  if (loading) return <p className="text-slate-500 text-sm mt-4 font-medium">Chargement des discussions...</p>;
 
   if (comments.length === 0) {
-    return <p className="text-gray-500 text-sm mt-4 italic">Aucun commentaire pour l'instant. Soyez le premier !</p>;
+    return <p className="text-slate-400 text-sm mt-4 italic font-medium">Aucun commentaire pour l'instant. Soyez le premier !</p>;
   }
 
   return (
     <div className="mt-6 space-y-4">
       {comments.map((comment) => (
-        <div key={comment.id} className="bg-gray-700 p-4 rounded-lg shadow-sm border border-gray-600">
+        <div key={comment.id} className="bg-white p-4 rounded-xl shadow-sm border border-sky-100/85">
           <div className="flex justify-between items-start mb-2">
-            <span className="font-semibold text-cyan-400 text-sm">
+            <span className="font-semibold text-sky-600 text-sm">
               {comment.authorEmail}
             </span>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-slate-400 font-medium">
               {formatDate(comment.createdAt)}
             </span>
           </div>
-          <p className="text-gray-200 text-sm whitespace-pre-wrap">
+          <p className="text-slate-700 text-sm whitespace-pre-wrap leading-relaxed">
             {comment.text}
           </p>
         </div>

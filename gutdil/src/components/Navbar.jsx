@@ -105,26 +105,26 @@ function Navbar() {
 
   return (
     // 'relative' est nécessaire pour positionner le menu mobile en dessous
-    <nav className="bg-gray-800 text-white shadow-md relative">
+    <nav className="bg-white/80 backdrop-blur-md text-slate-800 border-b border-sky-100 shadow-sm sticky top-0 z-50 relative">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           
           {/* Partie Gauche: Logo et Liens (Bureau) */}
           <div className="flex items-center space-x-6">
-            <Link to="/home" className="text-xl font-bold text-cyan-400">
+            <Link to="/home" className="text-2xl font-black bg-gradient-to-r from-sky-600 to-cyan-500 bg-clip-text text-transparent tracking-tight">
               Gutdil
             </Link>
             
             {/* NOUVEAU: Ces liens sont maintenant cachés sur mobile (hidden)
                 et visibles sur bureau (md:flex) */}
-            <div className="hidden md:flex space-x-4">
-              <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+            <div className="hidden md:flex space-x-2">
+              <Link to="/" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
                 Accueil
               </Link>
-              <Link to="/a-propos" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+              <Link to="/a-propos" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
                 À Propos
               </Link>
-              <Link to="/contact" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+              <Link to="/contact" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
                 Contact
               </Link>
             </div>
@@ -138,12 +138,12 @@ function Navbar() {
             <div className="hidden md:flex items-center">
               {currentUser ? (
                 <div className="flex items-center gap-4">
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm text-slate-500 font-medium bg-sky-50 px-3 py-1.5 rounded-full border border-sky-100/50">
                     {currentUser.email}
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="px-3 py-2 rounded-md text-sm font-medium bg-violet-600 hover:bg-violet-700"
+                    className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all"
                   >
                     Déconnexion
                   </button>
@@ -151,7 +151,7 @@ function Navbar() {
               ) : (
                 <Link
                   to="/connexion"
-                  className="px-3 py-2 rounded-md text-sm font-medium bg-cyan-500 hover:bg-cyan-600"
+                  className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-sky-500 to-cyan-500 shadow-md shadow-sky-500/10 hover:opacity-95 active:scale-95 transition-all"
                 >
                   Connexion / Inscription
                 </Link>
@@ -162,7 +162,7 @@ function Navbar() {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700"
+                className="p-2 rounded-lg text-slate-500 hover:text-sky-600 hover:bg-sky-50 transition-all"
                 aria-controls="mobile-menu"
                 aria-expanded={isMobileMenuOpen}
               >
@@ -175,38 +175,38 @@ function Navbar() {
 
       {/* Le menu mobile (s'affiche conditionnellement) */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute w-full bg-gray-800 z-10" id="mobile-menu">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden absolute w-full bg-white/95 backdrop-blur-md border-b border-sky-100 z-50 shadow-lg" id="mobile-menu">
+          <div className="px-4 pt-2 pb-4 space-y-1">
             <Link
               to="/"
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+              className="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all"
               onClick={() => setIsMobileMenuOpen(false)} // Ferme le menu au clic
             >
               Accueil
             </Link>
             <Link
               to="/a-propos"
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+              className="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all"
               onClick={() => setIsMobileMenuOpen(false)} // Ferme le menu au clic
             >
               À Propos
             </Link>
             <Link
               to="/contact"
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+              className="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all"
               onClick={() => setIsMobileMenuOpen(false)} // Ferme le menu au clic
             >
               Contact
             </Link>
             
             {/* Séparateur pour les actions d'authentification */}
-            <div className="border-t border-gray-700 pt-3 mt-2">
+            <div className="border-t border-sky-100 pt-3 mt-2">
               {currentUser ? (
-                <div className="px-3 py-2">
-                  <p className="text-sm text-gray-400 mb-2">{currentUser.email}</p>
+                <div className="px-3">
+                  <p className="text-sm text-slate-500 mb-2 font-medium">{currentUser.email}</p>
                   <button
                     onClick={handleLogout}
-                    className="w-150 text-left block px-3 py-2 rounded-md text-sm font-medium text-white bg-violet-600 hover:bg-violet-700"
+                    className="w-full text-center block px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-all"
                   >
                     Déconnexion
                   </button>
@@ -214,7 +214,7 @@ function Navbar() {
               ) : (
                 <Link
                   to="/connexion"
-                  className="w-auto text-center block px-3 py-2 rounded-md text-base font-medium bg-cyan-500 hover:bg-cyan-600"
+                  className="w-full text-center block px-4 py-2.5 rounded-lg text-base font-semibold text-white bg-gradient-to-r from-sky-500 to-cyan-500"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Connexion / Inscription

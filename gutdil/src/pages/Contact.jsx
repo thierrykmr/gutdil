@@ -51,45 +51,45 @@ function Contact() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-10 border border-gray-700">
-        <h1 className="text-3xl font-black mb-2 bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
-          Contactez nous
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl p-6 md:p-10 border border-sky-100">
+        <h1 className="text-3xl font-black mb-2 bg-gradient-to-r from-sky-600 to-cyan-500 bg-clip-text text-transparent">
+          Contactez-nous
         </h1>
-        <p className="text-gray-400 mb-8 text-sm">
+        <p className="text-slate-500 mb-8 text-sm font-medium">
           {currentUser ? (
-            <>Connecté en tant que : <span className="text-cyan-400">{currentUser.email}</span></>
+            <>Connecté en tant que : <span className="text-sky-600 font-bold bg-sky-50 px-2.5 py-1 rounded-full border border-sky-100/50 ml-1">{currentUser.email}</span></>
           ) : (
-            <>Vous devez vous connecter pour envoyer un message.</>
+            <span className="text-slate-500">Vous devez vous connecter pour envoyer un message.</span>
           )}
         </p>
 
         <form ref={form} onSubmit={sendEmail} className="space-y-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-400 mb-2">Sujet du message</label>
+            <label className="block text-sm font-bold text-slate-600 mb-2">Sujet du message</label>
             <input 
               type="text" 
               name="title" // Correspond au {{title}} du template
               required 
               placeholder="Quel est l'objet de votre demande ?"
-              className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-cyan-500 outline-none transition-all"
+              className="w-full bg-sky-50/40 border border-sky-100 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 outline-none transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-400 mb-2">Message</label>
+            <label className="block text-sm font-bold text-slate-600 mb-2">Message</label>
             <textarea 
               name="message" // Correspond au {{message}} du template
               required 
               rows="5"
               placeholder="Décrivez votre problème ou suggestion..."
-              className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-cyan-500 outline-none transition-all resize-none"
+              className="w-full bg-sky-50/40 border border-sky-100 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 outline-none transition-all resize-none"
             ></textarea>
           </div>
 
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full py-4 bg-gradient-to-r from-cyan-500 to-violet-600 rounded-xl font-bold text-white shadow-lg shadow-cyan-500/20 hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50"
+            className="w-full py-4 bg-gradient-to-r from-sky-500 to-cyan-500 rounded-xl font-bold text-white shadow-md shadow-sky-500/10 hover:opacity-95 transition-all active:scale-[0.98] disabled:opacity-50"
           >
             {loading ? "Envoi en cours..." : "Envoyer mon message"}
           </button>

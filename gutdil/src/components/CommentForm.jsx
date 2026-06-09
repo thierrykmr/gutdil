@@ -60,12 +60,12 @@ function CommentForm({ dealId }) {
   };
 
   return (
-    <div className="mt-8 pt-4 border-t border-gray-700">
-      <h3 className="text-xl font-bold text-white mb-4">Laisser un commentaire</h3>
+    <div className="mt-8 pt-4 border-t border-sky-100">
+      <h3 className="text-xl font-bold text-slate-800 mb-4">Laisser un commentaire</h3>
       
       {/* Affichage d'un message si l'utilisateur n'est pas connecté */}
       {!currentUser && (
-        <p className="text-sm text-gray-400 mb-4">
+        <p className="text-sm text-slate-500 mb-4">
           Connectez-vous pour participer à la discussion.
         </p>
       )}
@@ -78,12 +78,12 @@ function CommentForm({ dealId }) {
           rows="3"
           required
           disabled={loading || !currentUser}
-          className="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-white disabled:opacity-50"
+          className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 disabled:opacity-50 transition-all resize-none"
         />
         <button
           type="submit"
           disabled={loading || !currentUser}
-          className="px-6 py-2 rounded-lg bg-cyan-600 text-white font-semibold hover:bg-cyan-700 transition-colors disabled:opacity-50"
+          className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95 disabled:opacity-50"
         >
           {loading ? 'Publication...' : 'Commenter'}
         </button>

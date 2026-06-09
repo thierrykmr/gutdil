@@ -41,21 +41,21 @@ function Home() {
 
   return (
     <>
-      <div className="max-w-6xl mx-auto p-4 md:p-8 text-white">
+      <div className="max-w-6xl mx-auto p-4 md:p-8 text-slate-800">
         
         {/* LA BARRE DE RECHERCHE EST TOUT EN HAUT */}
         <SearchBar />
 
         <header className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">
+          <h2 className="text-3xl font-black text-slate-900 tracking-tight">
             Les derniers Bons Plans
           </h2>
           
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 rounded-md bg-cyan-500 text-white font-semibold hover:bg-cyan-600 transition-colors shadow-lg shadow-cyan-500/20"
+            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-lg shadow-sky-500/20 active:scale-95"
           >
-            +
+            + Publier
           </button>
         </header>
         

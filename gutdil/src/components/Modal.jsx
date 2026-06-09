@@ -25,19 +25,19 @@ function Modal({ isOpen, onClose, children }) {
     // 'z-50' le met au-dessus de tout le reste.
     // 'onClick={onClose}' permet de fermer le modal en cliquant sur le fond.
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-fade-in"
       onClick={onClose} 
     >
       {/* 2. La "Carte" du Modal (le contenu blanc/gris) */}
       {/* 'onClick' ici empêche la fermeture si on clique dans le modal. */}
       <div
-        className="relative w-full max-w-lg bg-gray-800 rounded-lg shadow-xl p-6"
+        className="relative w-full max-w-lg bg-white rounded-3xl border border-sky-100 shadow-2xl p-6 md:p-8"
         onClick={(e) => e.stopPropagation()} 
       >
         {/* 3. Le bouton de fermeture 'X' */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-600 hover:bg-sky-50 rounded-xl transition-all"
           aria-label="Fermer le modal"
         >
           <CloseIcon />

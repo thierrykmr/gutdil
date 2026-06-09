@@ -7,7 +7,7 @@ import Footer from './components/Footer';
 function App() {
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-tr from-sky-50 via-white to-cyan-50 text-slate-800">
       {/* 1. La Navbar est toujours affichée */}
       <Navbar />
       < Alert />

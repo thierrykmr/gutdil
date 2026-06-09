@@ -109,24 +109,24 @@ function EditDealPage() {
 
     // 3. AFFICHAGE (Le formulaire)
     if (loading || !deal) {
-        return <p className="max-w-4xl mx-auto p-8 text-white">Chargement du deal pour modification...</p>;
+        return <p className="max-w-4xl mx-auto p-8 text-slate-700 font-medium">Chargement du bon plan pour modification...</p>;
     }
 
     return (
-        <div className="max-w-lg mx-auto p-4 md:p-8 text-white">
+        <div className="max-w-lg mx-auto p-4 md:p-8 text-slate-800">
             <button 
                 onClick={() => navigate(-1)} // Retour à la page précédente
-                className="text-cyan-400 hover:underline mb-4 flex items-center gap-2"
+                className="text-sky-600 hover:text-cyan-600 hover:underline mb-6 flex items-center gap-2 font-semibold transition-all"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                 Retour aux deals
             </button>
-            <h1 className="text-xl font-bold mb-6">Modifier le deal: {deal.title}</h1>
-            <form onSubmit={handleSubmit} className="space-y-4 bg-gray-800 p-6 rounded-lg shadow-xl">
+            <h1 className="text-2xl font-black mb-6 text-slate-800 tracking-tight">Modifier le deal : {deal.title}</h1>
+            <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-2xl border border-sky-100 shadow-xl">
                 
                 {/* Champ Catégorie (similaire à CreateDeal) */}
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-300 mb-1">
+                  <label htmlFor="category" className="block text-sm font-bold text-slate-600 mb-1.5">
                     Catégorie *
                   </label>
                   <div className="relative"> 
@@ -135,8 +135,7 @@ function EditDealPage() {
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       required
-                      // Nous réutilisons le style qui gère l'apparence et la flèche
-                      className="select-styled w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all"
                       style={{ paddingRight: '3rem' }} // Laisse de l'espace pour la flèche SVG
                     >
                       <option value="" disabled>-- Sélectionner une catégorie --</option>
@@ -149,46 +148,41 @@ function EditDealPage() {
 
                 {/* Champ Titre */}
                 <div>
-                    <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">Titre *</label>
+                    <label htmlFor="title" className="block text-sm font-bold text-slate-600 mb-1.5">Titre *</label>
                     <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} required 
-                           className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
+                           className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all" />
                 </div>
                 
                 {/* Champ Description */}
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">Description *</label>
+                    <label htmlFor="description" className="block text-sm font-bold text-slate-600 mb-1.5">Description *</label>
                     <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} rows="4" required
-                              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
+                              className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all resize-none" />
                 </div>
 
                 {/* Champ Image (affichage de l'ancienne image) */}
                 <div>
-                    <label htmlFor="newImage" className="block text-sm font-medium text-gray-300 mb-1">Nouvelle Image (Optionnelle)</label>
+                    <label htmlFor="newImage" className="block text-sm font-bold text-slate-600 mb-1.5">Nouvelle Image (Optionnelle)</label>
                     {deal.imageUrl && !newImageFile && (
-                        <p className="text-sm text-gray-400 mb-2">Image actuelle : <img src={deal.imageUrl} alt="Deal" className="h-16 w-auto inline-block ml-2 rounded" /></p>
+                        <p className="text-sm text-slate-500 mb-2 font-medium">Image actuelle : <img src={deal.imageUrl} alt="Deal" className="h-16 w-auto inline-block ml-2 rounded border border-sky-100 p-0.5 bg-sky-50/20" /></p>
                     )}
                     <input id="newImage" type="file" accept="image/*" onChange={handleImageChange} 
-                           className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4
-                             file:rounded-md file:border-0 file:text-sm file:font-semibold
-                             file:bg-violet-600 file:text-white hover:file:bg-violet-700" />
+                           className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
+                             file:rounded-xl file:border-0 file:text-sm file:font-bold
+                             file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition-all" />
                 </div>
 
                 {/* Champs Prix et Lien */}
                 <div className="flex gap-4">
-                    {/* <div className="flex-1">
-                        <label htmlFor="price" className="block text-sm font-medium text-gray-300 mb-1">Prix</label>
-                        <input id="price" type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)}
-                               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
-                    </div> */}
                     <div className="flex-grow">
-                        <label htmlFor="link" className="block text-sm font-medium text-gray-300 mb-1">Lien vers le deal (Optionnel) </label>
+                        <label htmlFor="link" className="block text-sm font-bold text-slate-600 mb-1.5">Lien vers le deal (Optionnel) </label>
                         <input id="link" type="url" value={link} onChange={(e) => setLink(e.target.value)}  
-                               className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:ring-cyan-500" />
+                               className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all" />
                     </div>
                 </div>
 
                 <button type="submit" disabled={submitting} 
-                        className="w-full p-3 rounded-md bg-cyan-600 text-white font-bold hover:bg-cyan-700 disabled:opacity-50">
+                        className="w-full p-3 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95 disabled:opacity-50 mt-4">
                     {submitting ? 'Mise à jour...' : 'Mettre à jour le deal'}
                 </button>
             </form>

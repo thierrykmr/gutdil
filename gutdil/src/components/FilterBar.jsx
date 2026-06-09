@@ -25,7 +25,7 @@ function FilterBar({ selectedCategory, onSelectCategory }) {
           - 'pointer-events-none' est crucial pour pouvoir cliquer sur les boutons sous le dégradé.
           - 'from-gray-900' doit correspondre à la couleur de fond de ton App.jsx.
       */}
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-900 via-gray-900/80 to-transparent pointer-events-none z-10"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-sky-50 via-sky-50/80 to-transparent pointer-events-none z-10"></div>
       {/* le degradé depend de w-20 et la couleur du degradé de from-gray-900 via-gray-900/80 to-transparent */}
 
       {/* Conteneur de scroll avec la Ref */}
@@ -36,10 +36,10 @@ function FilterBar({ selectedCategory, onSelectCategory }) {
         {/* Bouton pour réinitialiser le filtre */}
         <button
           onClick={(e) => handleCategoryClick(e, '')}
-          className={`inline-block px-5 py-2 rounded-full text-sm font-bold transition-all border shrink-0
+          className={`inline-block px-5 py-2.5 rounded-full text-sm font-bold transition-all border shrink-0
             ${selectedCategory === '' 
-              ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg shadow-cyan-500/20' 
-              : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-gray-500'}`}
+              ? 'bg-cyan-500 bg-gradient-to-r from-sky-500 to-cyan-500 text-white border-sky-400/50 shadow-md shadow-sky-500/15' 
+              : 'bg-white text-slate-600 border-sky-100/80 hover:bg-sky-50/80 hover:text-sky-700 shadow-sm'}`}
         >
           Tous
         </button>
@@ -49,10 +49,10 @@ function FilterBar({ selectedCategory, onSelectCategory }) {
           <button
             key={cat}
             onClick={(e) => handleCategoryClick(e, cat)}
-            className={`inline-block px-5 py-2 rounded-full text-sm font-bold transition-all border shrink-0
+            className={`inline-block px-5 py-2.5 rounded-full text-sm font-bold transition-all border shrink-0
               ${selectedCategory === cat 
-                ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg shadow-cyan-500/20' 
-                : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-gray-500'}`}
+                ? 'bg-cyan-500 bg-gradient-to-r from-sky-500 to-cyan-500 text-white border-sky-400/50 shadow-md shadow-sky-500/15' 
+                : 'bg-white text-slate-600 border-sky-100/80 hover:bg-sky-50/80 hover:text-sky-700 shadow-sm'}`}
           >
             {cat}
           </button>

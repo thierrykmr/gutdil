@@ -79,19 +79,19 @@ function Auth() {
   
   return (
     // Conteneur de la page (votre ancien .auth-page)
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-sky-50 via-white to-cyan-50 text-slate-800 p-4">
       
-      {/* La carte d'authentification (votre ancien .auth-card) */}
-      <div className="w-full max-w-md bg-gray-800 rounded-lg shadow-xl p-6 md:p-8">
+      {/* La carte d'authentification */}
+      <div className="w-full max-w-md bg-white rounded-3xl border border-sky-100 shadow-xl p-6 md:p-8">
         
-        {/* L'en-tête (votre .auth-brand) */}
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center text-white font-bold text-xl">
+        {/* L'en-tête */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-sky-500/15">
             G
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Gutdil</h1>
-            <p className="text-sm text-gray-400">
+            <h1 className="text-xl font-bold text-slate-800">Gutdil</h1>
+            <p className="text-sm text-slate-500 font-medium">
               {isLogin ? 'Connectez-vous à votre compte' : 'Créez un nouveau compte'}
             </p>
           </div>
@@ -100,7 +100,7 @@ function Auth() {
         {/* Formulaire Email */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+              <label htmlFor="email" className="block text-sm font-bold text-slate-600 mb-1.5">
                 Email
               </label>
               <input 
@@ -108,50 +108,47 @@ function Auth() {
                 onChange={(e) => setEmail(e.target.value)} 
                 required placeholder="votreadresse@email.com"
                 autoComplete='email'
-                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all"
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+              <label htmlFor="password" className="block text-sm font-bold text-slate-600 mb-1.5">
                 Mot de passe
               </label>
               <input 
                 id="password" type="password" value={password}
                 onChange={(e) => setPassword(e.target.value)} 
                 required placeholder="••••••••" autoComplete="current-password"
-                // pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$"
-                // title="Minimum 8 caractères, dont au moins une lettre, un chiffre et un caractère spécial (!@#$%^&*)"
-                className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all"
               />
-              {/* <p className="text-xs text-gray-400 mt-1">Min. 8 caractères, 1 lettre, 1 chiffre, 1 caractère spécial</p> */}
             </div>
             
             {error && (
-              <p className="text-sm text-red-400 bg-red-900/50 p-3 rounded-md border border-red-800" role="alert">
+              <p className="text-sm text-red-600 bg-red-50 p-3 rounded-xl border border-red-100 font-semibold" role="alert">
                 {error}
               </p>
             )}
             
-            <button type="submit" className="w-full p-3 rounded-md bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold hover:opacity-90 transition-opacity">
+            <button type="submit" className="w-full p-3 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95">
               {isLogin ? 'Se connecter' : "S'inscrire"}
             </button>
           </form>
 
           {/* Séparateur */}
-        <div className="flex items-center my-4">
-          <div className="flex-grow border-t border-gray-700"></div>
-          <span className="mx-2 text-xs font-semibold text-gray-500">OU</span>
-          <div className="flex-grow border-t border-gray-700"></div>
+        <div className="flex items-center my-5">
+          <div className="flex-grow border-t border-sky-100"></div>
+          <span className="mx-2 text-xs font-bold text-slate-400">OU</span>
+          <div className="flex-grow border-t border-sky-100"></div>
         </div>
 
         {/* Bouton Google */}
-        <button onClick={handleGoogleSignIn} className="w-full flex items-center justify-center gap-3 p-3 rounded-md bg-gray-700 text-white font-medium hover:bg-gray-600 transition-colors border border-gray-600">
+        <button onClick={handleGoogleSignIn} className="w-full flex items-center justify-center gap-3 p-3 rounded-xl bg-slate-50 text-slate-700 font-bold hover:bg-slate-100/80 transition-all border border-sky-100 shadow-sm active:scale-95">
           <GoogleIcon />
           Continuer avec Google
         </button>
 
         {/* Bouton pour basculer */}
-        <button onClick={() => setIsLogin(!isLogin)} className="w-full mt-4 text-sm text-cyan-400 hover:text-cyan-300 underline text-center">
+        <button onClick={() => setIsLogin(!isLogin)} className="w-full mt-5 text-sm text-sky-600 hover:text-cyan-600 font-semibold transition-colors underline text-center">
           {isLogin ? "Pas de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
         </button>
       </div>

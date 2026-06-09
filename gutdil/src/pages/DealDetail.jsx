@@ -73,69 +73,62 @@ useEffect(() => {
   }, [dealId, navigate]); // Rechargement si l'ID ou la navigation change
 
   if (loading) {
-    return <p className="max-w-6xl mx-auto p-8 text-white">Chargement des détails...</p>;
+    return <p className="max-w-6xl mx-auto p-8 text-slate-700 font-medium">Chargement des détails...</p>;
   }
   if (error) {
-    return <p className="max-w-6xl mx-auto p-8 text-red-400">{error}</p>;
+    return <p className="max-w-6xl mx-auto p-8 text-red-500 font-bold">{error}</p>;
   }
   if (!deal) {
-    return <p className="max-w-6xl mx-auto p-8 text-gray-400">Deal introuvable.</p>;
+    return <p className="max-w-6xl mx-auto p-8 text-slate-500">Deal introuvable.</p>;
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-8 text-white">
+    <div className="max-w-4xl mx-auto p-4 md:p-8 text-slate-800">
       <button 
         onClick={() => navigate(-1)} // Retour à la page précédente
-        className="text-cyan-400 hover:underline mb-4 flex items-center gap-2"
+        className="text-sky-600 hover:text-cyan-600 hover:underline mb-6 flex items-center gap-2 font-semibold transition-colors"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
         Retour aux deals
       </button>
 
-      <div className="bg-gray-800 p-6 rounded-xl shadow-2xl">
-        <h1 className="text-3xl font-bold mb-4 text-cyan-400">{deal.title}</h1>
+      <div className="bg-white p-6 md:p-8 rounded-2xl border border-sky-100/80 shadow-xl">
+        <h1 className="text-3xl font-black mb-4 bg-gradient-to-r from-sky-600 to-cyan-500 bg-clip-text text-transparent leading-tight">{deal.title}</h1>
         
         {deal.imageUrl && (
-          <img src={deal.imageUrl} alt={deal.title} className="w-full max-h-96 object-contain rounded-lg mb-6 bg-gray-700" />
+          <img src={deal.imageUrl} alt={deal.title} className="w-full max-h-96 object-contain rounded-xl mb-6 bg-sky-50/30 border border-sky-100/50 p-2" />
         )}
 
-        {/* <div className="flex justify-between items-center border-b border-gray-700 pb-3 mb-4">
-            <span className="text-4xl font-bold text-white">{deal.price} €</span>
-            <span className="px-3 py-1 rounded-full bg-violet-600/30 text-violet-300 font-semibold">
-                {deal.category}
-            </span>
-        </div> */}
-
-        <h2 className="text-xl font-bold mt-6 mb-2 text-gray-200">Description Complète</h2>
-        <p className="text-gray-400 whitespace-pre-wrap">{deal.description}</p>
+        <h2 className="text-xl font-bold mt-6 mb-2 text-slate-800">Description Complète</h2>
+        <p className="text-slate-600 whitespace-pre-wrap leading-relaxed">{deal.description}</p>
         
-        <div className="mt-8 pt-4 border-t border-gray-700 flex justify-between items-center">
-            <span className="text-sm text-gray-500">Posté par {deal.authorEmail}</span>
+        <div className="mt-8 pt-4 border-t border-sky-100 flex justify-between items-center">
+            <span className="text-sm text-slate-400 font-medium">Posté par {deal.authorEmail}</span>
             { deal.link ? (<a
                 href={deal.link}
                 target="_blank"
-                className="px-3 py-2 rounded-lg bg-violet-600 text-white font-bold text-lg hover:bg-violet-700 transition-colors"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-base hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95"
             >
                 Voir le deal
             </a>) : null }
         </div>
         { deal.commentCount > 0 ?
-            (<div className="mt-8 pt-4 border-t border-gray-700 flex justify-between items-center">
+            (<div className="mt-8 pt-4 border-t border-sky-100 flex justify-between items-center">
             
-                <span className="text-sm text-gray-500">Veuillez scroller vers le bas pour consulter les commentaires. </span>
+                <span className="text-sm text-slate-400 italic">Veuillez scroller vers le bas pour consulter les commentaires. </span>
             </div>) : null }
 
       </div>
 
-      {/* Placeholder pour Commentaires / Votes */}
-      <div className="mt-8 border-t border-gray-700 pt-4">
+      {/* Commentaires */}
+      <div className="mt-8 border-t border-sky-100 pt-4">
         {/* NOUVELLE ZONE : Affichage du formulaire de commentaire */}
         <CommentForm dealId={deal.id} /> 
         
         {/* Liste des commentaires */}
         <div className="mt-8">
             {/* On utilise le vrai compteur du deal */}
-            <h3 className="text-xl font-bold text-gray-200 mb-4">
+            <h3 className="text-xl font-bold text-slate-800 mb-4">
               {currentCommentCount} Commentaires
             </h3>
             

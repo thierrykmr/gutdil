@@ -163,12 +163,10 @@ function DealCard({ deal }) {
         <>
             <Link 
             to={`/deals/${deal.id}`} onClick={handleDealClick}
-            className="block bg-gray-800 rounded-xl shadow-lg overflow-hidden transition duration-200 ease-in-out transform hover:scale-[1.02] hover:shadow-2xl group"
+            className="block bg-white rounded-2xl border border-sky-100 shadow-md hover:shadow-xl hover:border-sky-200/80 overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-[1.02] group relative"
             >
                 {isOwner && (
-                //    <div className="absolute top-2 right-2 z-20 flex gap-2">
                     <div className="absolute top-3 right-3 z-20 flex gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">
-                    {/* </div><div className="absolute top-3 right-3 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"> */}
                         <button 
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -176,7 +174,7 @@ function DealCard({ deal }) {
                                 console.log("Modifier deal:", deal.id);
                                 handleEditClick(deal.id); 
                             }}
-                            className="p-2.5 rounded-full bg-gray-900/90 text-cyan-400 border border-gray-700 shadow-xl active:scale-95 transition-transform"
+                            className="p-2 rounded-full bg-white/95 text-sky-600 border border-sky-100 hover:text-cyan-600 shadow-md active:scale-95 transition-all"
                             aria-label="Modifier le deal"
                         >
                             {/* SVG d'un crayon/éditer */}
@@ -191,7 +189,7 @@ function DealCard({ deal }) {
                                 e.stopPropagation(); 
                                 setIsDeleteModalOpen(true); // On ne supprime pas encore, on demande confirmation
                             }}
-                            className="p-2.5 rounded-full bg-gray-900/90 text-red-500 border border-gray-700 shadow-xl active:scale-95 transition-transform"
+                            className="p-2 rounded-full bg-white/95 text-red-500 border border-sky-100 hover:text-red-600 shadow-md active:scale-95 transition-all"
                             aria-label="Supprimer le deal"
                         >
                             {/* SVG de la corbeille */}
@@ -201,115 +199,100 @@ function DealCard({ deal }) {
                         </button>
 
                     </div>
-
-            
-
-
                 )}
                 
                 {/* Image: affiche l'image du deal ou le fallback DEFAULT_IMAGE_URL */}
-                <div className="h-40 bg-gray-700 overflow-hidden">
+                <div className="h-40 bg-sky-50/40 overflow-hidden relative border-b border-sky-50">
                     {imgFailed ? (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-700">
-                            <div className="text-gray-400 text-sm">Image indisponible</div>
+                        <div className="w-full h-full flex items-center justify-center bg-sky-50/50">
+                            <div className="text-slate-400 text-sm font-medium">Image indisponible</div>
                         </div>
                     ) : (
                         <img
                             src={deal.imageUrl || DEFAULT_IMAGE_URL}
                             alt={deal.title || 'Image du deal'}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                             onError={handleImageError}
                         />
                     )}
                 </div>
 
-                <div className="p-4 space-y-2">
+                <div className="p-5 space-y-3">
                                 
                     {/* Catégorie et Date */}
-                    <div className="flex justify-between items-start text-xs text-gray-400">
-                        <span className="px-2 py-0.5 rounded-full bg-violet-600/30 text-violet-300 font-semibold">
+                    <div className="flex justify-between items-center text-xs text-slate-400">
+                        <span className="px-2.5 py-1 rounded-full bg-sky-50 text-sky-700 font-bold border border-sky-100/50">
                             {deal.category}
                         </span>
-                        <span title={deal.authorEmail}>
+                        <span title={deal.authorEmail} className="font-medium">
                             Posté le {formatDate(deal.createdAt)}
                         </span>
                     </div>
 
                     {/* Titre et Description */}
-                    <h3 className="text-xl font-bold text-white leading-tight">
+                    <h3 className="text-lg font-bold text-slate-800 leading-snug group-hover:text-sky-600 transition-colors">
                         {deal.title}
                     </h3>
-                    <p className="text-sm text-gray-400 line-clamp-2">
+                    <p className="text-sm text-slate-500 line-clamp-2">
                         {deal.description}
                     </p>
-
-                    {/* Prix et Bouton de Lien */}
-                    {/* <div className="flex justify-between items-end pt-2">
-                        <span className="text-3xl font-extrabold text-cyan-400">
-                            {deal.price} €
-                        </span>
-                        
-                    </div> */}
                     
-                    {/* NOUVEAU: Espace pour les interactions (Likes & Commentaires) */}
-                    <div className="pt-2 flex justify-start items-center space-x-4 border-t border-gray-700 mt-2">
+                    {/* Espace pour les interactions (Likes & Commentaires) */}
+                    <div className="pt-3 flex justify-start items-center space-x-4 border-t border-sky-100/60 mt-3">
                         
                         {/* Bouton de Like */}
                         <button 
                             onClick={handleLikeToggle}
-                            className={`flex items-center text-sm font-semibold transition-colors
-                                ${hasLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}
+                            className={`flex items-center text-sm font-bold transition-all px-2.5 py-1 rounded-lg hover:bg-red-50/50
+                                ${hasLiked ? 'text-red-500 bg-red-50/30' : 'text-slate-400 hover:text-red-500'}
                             `}
                             aria-label={hasLiked ? "Ne plus aimer" : "Aimer ce deal"}
                         >
-                            <span className="text-lg mr-1">{hasLiked ? '❤️' : '👍'}</span>
+                            <span className="text-base mr-1">{hasLiked ? '❤️' : '👍'}</span>
                             {currentLikeCount}
                         </button>
 
-                        {/* Bouton de Commentaire (Exemple de futur bouton interactif) */}
+                        {/* Bouton de Commentaire */}
                         <button 
                             onClick={(e) => {
-
                                 console.log("Commentaire cliqué pour le deal:", deal.id);
                             }}
-                            className="flex items-center text-sm text-gray-400 hover:text-cyan-500 transition-colors"
+                            className="flex items-center text-sm font-bold text-slate-400 hover:text-sky-600 hover:bg-sky-50/50 px-2.5 py-1 rounded-lg transition-all"
                             aria-label="Voir les commentaires"
                         >
-                            <span className="text-lg mr-1">💬</span>
+                            <span className="text-base mr-1">💬</span>
                             {currentCommentCount}
                         </button>
 
                     </div>
 
                 </div>
-            
             </Link>
 
         {/* MODAL DE CONFIRMATION - Taille réduite via max-w-sm */}
             <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
                 <div className="max-w-sm mx-auto text-center p-2">
-                    <div className="w-12 h-12 bg-red-900/20 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    {/* <div className="max-w-[90vw] sm:max-w-sm mx-auto text-center p-1"> */}
+                    <div className="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
                     </div>
-                    <h3 className="text-lg font-bold text-white mb-2">Supprimer définitivement ?</h3>
-                    <p className="text-sm text-gray-400 mb-6">
+                    <h3 className="text-lg font-bold text-slate-800 mb-2">Supprimer définitivement ?</h3>
+                    <p className="text-sm text-slate-500 mb-6">
                         Voulez-vous vraiment supprimer <strong>{deal.title}</strong> ?
                     </p>
                     <div className="flex gap-3">
                         <button 
                             onClick={() => setIsDeleteModalOpen(false)}
-                            className="flex-1 py-2 rounded-md bg-gray-700 text-white text-sm font-semibold hover:bg-gray-600 transition-colors"
+                            className="flex-1 py-2 rounded-xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200 transition-colors"
                         >
                             Annuler
                         </button>
                         <button 
                             onClick={handleConfirmDelete}
                             disabled={isDeleting}
-                            className="flex-1 py-2 rounded-md bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors disabled:opacity-50"
+                            className="flex-1 py-2 rounded-xl bg-red-500 text-white text-sm font-semibold hover:bg-red-600 transition-colors disabled:opacity-50"
                         >
                             {isDeleting ? "..." : "Supprimer"}
                         </button>

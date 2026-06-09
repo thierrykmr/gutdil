@@ -126,13 +126,13 @@ function CreateDeal({ onDealPosted }) {
 
   return (
     <>
-      <h3 className="text-2xl font-bold mb-4 text-white">
+      <h3 className="text-2xl font-black mb-6 text-slate-800 tracking-tight">
         Partager un bon plan
       </h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         
         <div>
-          <label htmlFor="category" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="category" className="block text-sm font-bold text-slate-600 mb-1.5">
             Catégorie *
           </label>
           <select
@@ -140,7 +140,7 @@ function CreateDeal({ onDealPosted }) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all"
           >
             <option value="" disabled>-- Choisir une catégorie --</option>
             {DEAL_CATEGORIES.map((cat) => (
@@ -150,19 +150,19 @@ function CreateDeal({ onDealPosted }) {
         </div>
 
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="title" className="block text-sm font-bold text-slate-600 mb-1.5">
             Titre du deal *
           </label>
           <input 
             id="title" type="text" value={title}
             onChange={(e) => setTitle(e.target.value)} 
             required placeholder="Ex: Gemini gratuit pendant 1 an"
-            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all"
           />
         </div>
         
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="description" className="block text-sm font-bold text-slate-600 mb-1.5">
             Description *
           </label>
           <textarea 
@@ -170,58 +170,47 @@ function CreateDeal({ onDealPosted }) {
             onChange={(e) => setDescription(e.target.value)} 
             required
             rows="3" placeholder="Donnez plus de détails..."
-            className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all resize-none"
           />
         </div>
 
         <div>
-          <label htmlFor="image" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="image" className="block text-sm font-bold text-slate-600 mb-1.5">
             Image du deal (Optionnelle)
           </label>
           <input 
             id="image" type="file" accept="image/*"
             onChange={handleImageChange}
-            className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4
-                       file:rounded-md file:border-0 file:text-sm file:font-semibold
-                       file:bg-violet-600 file:text-white hover:file:bg-violet-700"
+            className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4
+                       file:rounded-xl file:border-0 file:text-sm file:font-bold
+                       file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 file:transition-all transition-all"
           />
           {imageFile && (
-            <p className="text-xs text-gray-400 mt-1">Fichier sélectionné : {imageFile.name}</p>
+            <p className="text-xs text-sky-600 font-semibold mt-1">Fichier sélectionné : {imageFile.name}</p>
           )}
         </div>
 
         <div className="flex gap-4">
-          {/* <div className="flex-1">
-            <label htmlFor="price" className="block text-sm font-medium text-gray-300 mb-1">
-              Prix
-            </label>
-            <input 
-              id="price" type="number" step="0.01" value={price}
-              onChange={(e) => setPrice(e.target.value)} 
-              optional='true' placeholder="100.00"
-              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
-          </div> */}
           <div className="flex-grow">
-            <label htmlFor="link" className="block text-sm font-medium text-gray-300 mb-1">
+            <label htmlFor="link" className="block text-sm font-bold text-slate-600 mb-1.5">
               Lien vers le deal (Optionnel)
             </label>
             <input 
               id="link" type="url" value={link}
               onChange={(e) => setLink(e.target.value)} 
               optional='true' placeholder="https://..."
-              className="w-full p-3 rounded-md bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 transition-all"
             />
           </div>
         </div>
         
         {/* Affichage des messages */}
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <p className="text-sm text-red-500 font-semibold">{error}</p>}
 
         <button 
           type="submit" 
           disabled={loading}
-          className="w-full p-3 rounded-md bg-gradient-to-r from-cyan-500 to-violet-600 text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
+          className="w-full p-3 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95 disabled:opacity-50 mt-4"
         >
           {loading ? 'Publication...' : 'Poster le deal'}
         </button>
