@@ -127,6 +127,11 @@ function Navbar() {
               <Link to="/contact" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
                 Contact
               </Link>
+              {currentUser && (
+                <Link to="/profil" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
+                  Mon Profil
+                </Link>
+              )}
             </div>
           </div>
 
@@ -138,9 +143,9 @@ function Navbar() {
             <div className="hidden md:flex items-center">
               {currentUser ? (
                 <div className="flex items-center gap-4">
-                  <span className="text-sm text-slate-500 font-medium bg-sky-50 px-3 py-1.5 rounded-full border border-sky-100/50">
-                    {currentUser.email}
-                  </span>
+                  <Link to="/profil" className="text-sm text-slate-500 font-medium bg-sky-50 px-3 py-1.5 rounded-full border border-sky-100/50 hover:bg-sky-100 hover:text-sky-600 transition-all">
+                    {currentUser.displayName || currentUser.email}
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 active:scale-95 transition-all"
@@ -198,12 +203,27 @@ function Navbar() {
             >
               Contact
             </Link>
+            {currentUser && (
+              <Link
+                to="/profil"
+                className="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Mon Profil
+              </Link>
+            )}
             
             {/* Séparateur pour les actions d'authentification */}
             <div className="border-t border-sky-100 pt-3 mt-2">
               {currentUser ? (
                 <div className="px-3">
-                  <p className="text-sm text-slate-500 mb-2 font-medium">{currentUser.email}</p>
+                  <Link 
+                    to="/profil"
+                    className="block text-sm text-slate-500 mb-2 font-medium hover:text-sky-600 transition-all"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {currentUser.displayName || currentUser.email}
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="w-full text-center block px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-all"

@@ -15,6 +15,7 @@ import Home from './pages/Home.jsx';
 import DealDetail from './pages/DealDetail.jsx';
 import EditDealPage from './pages/EditDealPage.jsx';
 import Contact from './pages/Contact.jsx';
+import Profil from './pages/Profil.jsx';
 
 import Alert from './components/Alert.jsx';
 import { DealsProvider } from './context/DealsContext.jsx';
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
           {
             path: 'home',
             element: <Home />,
+          },
+          {
+            path: 'profil',
+            element: <Profil />,
           },
           {
             path: 'deals/:dealId', 
