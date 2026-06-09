@@ -11,7 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd gutdil && npm ci && npm run build
+      - name: Install dependencies
+        run: cd gutdil && npm ci
+      - name: Run tests
+        run: cd gutdil && npm run test
+      - name: Build project
+        run: cd gutdil && npm run build
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}

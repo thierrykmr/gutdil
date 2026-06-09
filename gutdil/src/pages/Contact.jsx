@@ -24,9 +24,10 @@ function Contact() {
 
     // On prépare les variables pour le template EmailJS
     // {{email}} et {{title}} doivent être présents dans ton template en ligne
+    const formData = new FormData(form.current);
     const templateParams = {
-      title: form.current.title.value,
-      message: form.current.message.value,
+      title: formData.get('title'),
+      message: formData.get('message'),
       email: currentUser.email, // On utilise l'email de l'utilisateur connecté
       time: new Date().toLocaleString('fr-FR')
     };

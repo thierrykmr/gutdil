@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { db } from '../firebaseConfig';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore'; 
-import { useAuth } from '../context/AuthContext';
 
 import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
@@ -12,19 +11,12 @@ function DealDetail() {
   // Récupère le paramètre dynamique de l'URL
   const { dealId } = useParams(); 
 
-  const { currentUser } = useAuth();
   const navigate = useNavigate();
-  
+
   const [deal, setDeal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [ currentCommentCount, setCurrentCommentCount ] = useState(0);
-
-  useEffect(() => {
-      if (!currentUser) {
-        navigate('/connexion');
-      }
-  }, [currentUser, navigate]);
+  const [currentCommentCount, setCurrentCommentCount] = useState(0);
 
   // Écoute en temps réel les changements du document deal (pour le compteur)
 useEffect(() => {

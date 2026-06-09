@@ -1,9 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { useDeals } from '../context/DealsContext'; // Import du contexte
-import { useNavigate } from 'react-router-dom';
-import { auth} from '../firebaseConfig';
-import { signOut } from 'firebase/auth';
 import FilterBar from '../components/FilterBar';
 import SearchBar from '../components/SearchBar';
 
@@ -12,7 +8,6 @@ import Modal from '../components/Modal';
 import DealList from '../components/DealList';
 
 function Home() { 
-  const { currentUser } = useAuth();
   const { 
     selectedCategory, 
     setSelectedCategory,
@@ -21,7 +16,6 @@ function Home() {
     setScrollPosition 
   } = useDeals(); // Utilisation du contexte global
   
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 1. Restaurer la position du scroll dès que le composant est monté
@@ -44,21 +38,6 @@ function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [setScrollPosition]);
-
-  // Gardien de sécurité
-  useEffect(() => {
-    if (!currentUser) {
-      navigate('/connexion');
-    }
-  }, [currentUser, navigate]);
-
-  const handleLogout = () => {
-    signOut(auth);
-  };
-
-  if (!currentUser) {
-    return null;
-  }
 
   return (
     <>

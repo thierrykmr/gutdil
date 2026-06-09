@@ -19,6 +19,7 @@ import Contact from './pages/Contact.jsx';
 import Alert from './components/Alert.jsx';
 import { DealsProvider } from './context/DealsContext.jsx';
 import NotFound from './pages/NotFound.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 //definition des routes
 const router = createBrowserRouter([
@@ -39,20 +40,25 @@ const router = createBrowserRouter([
         element: <Auth />,
       },
       {
-        path: 'home',
-        element: <Home />,
-      },
-      {
-        path: 'deals/:dealId', 
-        element: <DealDetail />,
-      },
-      {
-        path: 'edit-deal/:dealId', 
-        element: <EditDealPage />,
-      },
-      {
         path: 'contact',
         element: <Contact/>,
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: 'home',
+            element: <Home />,
+          },
+          {
+            path: 'deals/:dealId', 
+            element: <DealDetail />,
+          },
+          {
+            path: 'edit-deal/:dealId', 
+            element: <EditDealPage />,
+          },
+        ],
       },
       {
         path: '*',

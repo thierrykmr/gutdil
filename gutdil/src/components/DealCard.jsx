@@ -58,13 +58,6 @@ function DealCard({ deal }) {
         });
     };
 
-
-    useEffect(() => {
-          if (!currentUser) {
-            navigate('/connexion');
-          }
-      }, [currentUser, navigate]);
-
     useEffect(() => {
         if (!currentUser) return;
 

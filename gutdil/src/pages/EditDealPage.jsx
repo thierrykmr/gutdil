@@ -27,10 +27,7 @@ function EditDealPage() {
     // 1. CHARGEMENT et PROTECTION
     useEffect(() => {
         const fetchAndCheckDeal = async () => {
-            if (!currentUser) {
-                navigate('/connexion');
-                return;
-            }
+            if (!currentUser) return;
 
             const dealDocRef = doc(db, 'deals', dealId);
             const dealSnapshot = await getDoc(dealDocRef);
