@@ -203,7 +203,7 @@ function DealCard({ deal }) {
                 )}
                 
                 {/* Image: affiche l'image du deal ou le fallback DEFAULT_IMAGE_URL */}
-                <div className="h-40 bg-sky-50/40 overflow-hidden relative border-b border-sky-50">
+                <div className="w-full aspect-[16/10] bg-sky-50/40 overflow-hidden relative border-b border-sky-50">
                     {imgFailed ? (
                         <div className="w-full h-full flex items-center justify-center bg-sky-50/50">
                             <div className="text-slate-400 text-sm font-medium">Image indisponible</div>
@@ -212,7 +212,7 @@ function DealCard({ deal }) {
                         <img
                             src={deal.imageUrl || DEFAULT_IMAGE_URL}
                             alt={deal.title || 'Image du deal'}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
                             onError={handleImageError}
                         />
