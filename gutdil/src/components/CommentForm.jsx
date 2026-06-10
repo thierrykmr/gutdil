@@ -9,7 +9,7 @@ function CommentForm({ dealId }) {
   const [commentText, setCommentText] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { currentUser } = useAuth();
+  const { currentUser, triggerLoginModal } = useAuth();
   const { setAlert } = useAlert();
 
   const handleSubmit = async (e) => {
@@ -60,7 +60,7 @@ function CommentForm({ dealId }) {
   };
 
   return (
-    <div className="mt-8 pt-4 border-t border-sky-100">
+    <div className="mt-8 pt-4 border-t border-sky-100 relative">
       <h3 className="text-xl font-bold text-slate-800 mb-4">Laisser un commentaire</h3>
       
       {/* Affichage d'un message si l'utilisateur n'est pas connecté */}
@@ -70,24 +70,33 @@ function CommentForm({ dealId }) {
         </p>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <textarea
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          placeholder={currentUser ? "Écrivez votre commentaire..." : "Connectez-vous pour écrire..."}
-          rows="3"
-          required
-          disabled={loading || !currentUser}
-          className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 disabled:opacity-50 transition-all resize-none"
-        />
-        <button
-          type="submit"
-          disabled={loading || !currentUser}
-          className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95 disabled:opacity-50"
-        >
-          {loading ? 'Publication...' : 'Commenter'}
-        </button>
-      </form>
+      <div className="relative">
+        {!currentUser && (
+          <div 
+            onClick={() => triggerLoginModal("Pour laisser un commentaire sur ce bon plan, vous devez être connecté.")}
+            className="absolute inset-0 z-10 cursor-pointer rounded-xl"
+            aria-label="Connectez-vous pour commenter"
+          />
+        )}
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <textarea
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder={currentUser ? "Écrivez votre commentaire..." : "Connectez-vous pour écrire..."}
+            rows="3"
+            required
+            disabled={loading || !currentUser}
+            className="w-full p-3 rounded-xl bg-sky-50/40 border border-sky-100 text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-cyan-400/10 focus:border-cyan-400 disabled:opacity-50 transition-all resize-none"
+          />
+          <button
+            type="submit"
+            disabled={loading || !currentUser}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95 disabled:opacity-50"
+          >
+            {loading ? 'Publication...' : 'Commenter'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

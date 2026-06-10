@@ -2,12 +2,14 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { useDeals } from '../context/DealsContext'; // Import du contexte
 import FilterBar from '../components/FilterBar';
 import SearchBar from '../components/SearchBar';
+import { useAuth } from '../context/AuthContext';
 
 import CreateDeal from '../components/CreateDeal';
 import Modal from '../components/Modal';
 import DealList from '../components/DealList';
 
 function Home() { 
+  const { currentUser, triggerLoginModal } = useAuth();
   const { 
     selectedCategory, 
     setSelectedCategory,
@@ -52,7 +54,13 @@ function Home() {
           </h2>
           
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              if (!currentUser) {
+                triggerLoginModal("Pour publier un bon plan, vous devez être connecté.");
+              } else {
+                setIsModalOpen(true);
+              }
+            }}
             className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-lg shadow-sky-500/20 active:scale-95"
           >
             + Publier

@@ -29,7 +29,7 @@ const formatDate = (timestamp) => {
 };
 
 function DealCard({ deal }) {
-    const { currentUser } = useAuth();
+    const { currentUser, triggerLoginModal } = useAuth();
 
         const { resetDeals } = useDeals();
 
@@ -59,16 +59,17 @@ function DealCard({ deal }) {
         });
     };
 
+    const handleCardClick = (e) => {
+        if (!currentUser) {
+            e.preventDefault();
+            triggerLoginModal("Pour voir les détails de ce bon plan, vous devez être connecté.");
+        } else {
+            handleDealClick();
+        }
+    };
+
     useEffect(() => {
-        if (!currentUser) return;
-
-        // 1. Écoute si MOI j'ai liké ce deal
-        const likeDocRef = doc(db, 'deals', deal.id, 'likes', currentUser.uid);
-        const unsubscribeLike = onSnapshot(likeDocRef, (snapshot) => {
-            setHasLiked(snapshot.exists());
-        });
-
-        // 2. Écoute le document du DEAL pour avoir le likeCount en temps réel
+        // 1. Écoute le document du DEAL pour avoir le likeCount en temps réel (pour tout le monde)
         const dealDocRef = doc(db, 'deals', deal.id);
         const unsubscribeDeal = onSnapshot(dealDocRef, (snapshot) => {
             if (snapshot.exists()) {
@@ -77,6 +78,17 @@ function DealCard({ deal }) {
                 setCurrentCommentCount(data.commentCount || 0);
             }
         });
+
+        // 2. Écoute si MOI j'ai liké ce deal (seulement si connecté)
+        let unsubscribeLike = () => {};
+        if (currentUser) {
+            const likeDocRef = doc(db, 'deals', deal.id, 'likes', currentUser.uid);
+            unsubscribeLike = onSnapshot(likeDocRef, (snapshot) => {
+                setHasLiked(snapshot.exists());
+            });
+        } else {
+            setHasLiked(false);
+        }
 
         return () => {
             unsubscribeLike();
@@ -90,6 +102,11 @@ function DealCard({ deal }) {
         // Empêche la propagation du clic au Link parent
         e.stopPropagation(); 
         e.preventDefault();
+
+        if (!currentUser) {
+            triggerLoginModal("Pour voter pour ce bon plan, vous devez être connecté.");
+            return;
+        }
 
         const likeDocRef = doc(db, 'deals', deal.id, 'likes', currentUser.uid);
         const dealDocRef = doc(db, 'deals', deal.id);
@@ -163,7 +180,7 @@ function DealCard({ deal }) {
     return (
         <>
             <Link 
-            to={`/deals/${deal.id}`} onClick={handleDealClick}
+            to={`/deals/${deal.id}`} onClick={handleCardClick}
             className="block bg-white rounded-2xl border border-sky-100 shadow-md hover:shadow-xl hover:border-sky-200/80 overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-[1.02] group relative"
             >
                 {isOwner && (
@@ -257,7 +274,13 @@ function DealCard({ deal }) {
                         {/* Bouton de Commentaire */}
                         <button 
                             onClick={(e) => {
-                                console.log("Commentaire cliqué pour le deal:", deal.id);
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (!currentUser) {
+                                    triggerLoginModal("Pour commenter ce bon plan, vous devez être connecté.");
+                                } else {
+                                    navigate(`/deals/${deal.id}`);
+                                }
                             }}
                             className="flex items-center text-sm font-bold text-slate-400 hover:text-sky-600 hover:bg-sky-50/50 px-2.5 py-1 rounded-lg transition-all"
                             aria-label="Voir les commentaires"

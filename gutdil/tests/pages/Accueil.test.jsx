@@ -11,7 +11,7 @@ describe('Accueil', () => {
       </MemoryRouter>
     );
     expect(screen.getByText(/Bienvenue sur Gutdil/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Commencer/i })).toHaveAttribute('href', '/connexion');
-    expect(screen.getByRole('link', { name: /En savoir plus/i })).toHaveAttribute('href', '/a-propos');
+    expect(screen.getByRole('link', { name: /Découvrir les Bons Plans/i })).toHaveAttribute('href', '/home');
+    expect(screen.getByRole('link', { name: /Se connecter/i })).toHaveAttribute('href', '/connexion');
   });
 });

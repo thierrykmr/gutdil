@@ -7,9 +7,11 @@ import CommentList from '../components/CommentList';
 import CommentForm from '../components/CommentForm';
 import { shareDeal } from '../utils/shareHelper';
 import { useAlert } from '../context/AlertContext';
+import { useAuth } from '../context/AuthContext';
 
 
 function DealDetail() {
+  const { currentUser, triggerLoginModal } = useAuth();
   // Récupère le paramètre dynamique de l'URL
   const { dealId } = useParams(); 
 
@@ -120,6 +122,13 @@ useEffect(() => {
                 { deal.link ? (<a
                     href={deal.link}
                     target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                        if (!currentUser) {
+                            e.preventDefault();
+                            triggerLoginModal("Pour accéder au lien de ce bon plan, vous devez être connecté.");
+                        }
+                    }}
                     className="flex-1 sm:flex-none justify-center text-center px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-semibold text-sm hover:opacity-95 transition-all shadow-md shadow-sky-500/10 active:scale-95 whitespace-nowrap"
                 >
                     Voir le deal

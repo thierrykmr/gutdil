@@ -121,6 +121,9 @@ function Navbar() {
               <Link to="/" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
                 Accueil
               </Link>
+              <Link to="/home" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
+                Bons Plans
+              </Link>
               <Link to="/a-propos" className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-sky-600 hover:bg-sky-50 transition-all">
                 À Propos
               </Link>
@@ -188,6 +191,13 @@ function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)} // Ferme le menu au clic
             >
               Accueil
+            </Link>
+            <Link
+              to="/home"
+              className="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all"
+              onClick={() => setIsMobileMenuOpen(false)} // Ferme le menu au clic
+            >
+              Bons Plans
             </Link>
             <Link
               to="/a-propos"

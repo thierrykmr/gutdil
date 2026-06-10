@@ -33,6 +33,10 @@ const router = createBrowserRouter([
         element: <Accueil />,
       },
       {
+        path: 'home',
+        element: <Home />,
+      },
+      {
         path: 'a-propos', 
         element: <APropos />,
       },
@@ -45,19 +49,15 @@ const router = createBrowserRouter([
         element: <Contact/>,
       },
       {
+        path: 'deals/:dealId', 
+        element: <DealDetail />,
+      },
+      {
         element: <ProtectedRoute />,
         children: [
           {
-            path: 'home',
-            element: <Home />,
-          },
-          {
             path: 'profil',
             element: <Profil />,
-          },
-          {
-            path: 'deals/:dealId', 
-            element: <DealDetail />,
           },
           {
             path: 'edit-deal/:dealId', 

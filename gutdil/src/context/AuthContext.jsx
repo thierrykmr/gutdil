@@ -84,9 +84,26 @@ export function AuthProvider({ children }) {
   }, [currentUser]); 
 
 
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [loginModalMessage, setLoginModalMessage] = useState('');
+
+  const triggerLoginModal = (message) => {
+    setLoginModalMessage(message);
+    setIsLoginModalOpen(true);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+    setLoginModalMessage('');
+  };
+
   // Les "valeurs" que nous partageons avec toute l'application
   const value = {
-    currentUser
+    currentUser,
+    isLoginModalOpen,
+    loginModalMessage,
+    triggerLoginModal,
+    closeLoginModal
   };
 
   // On affiche les "enfants" (le reste de l'app) seulement quand on a fini de charger

@@ -14,16 +14,16 @@ function Accueil() {
       
       <div className="flex justify-center gap-4">
         <Link 
-          to="/connexion" 
+          to="/home" 
           className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold hover:opacity-95 transition-all shadow-lg shadow-sky-500/20 text-lg active:scale-95"
         >
-          Commencer
+          Découvrir les Bons Plans
         </Link>
         <Link 
-          to="/a-propos" 
+          to="/connexion" 
           className="px-8 py-3.5 rounded-xl bg-white text-slate-700 border border-sky-100 font-bold hover:bg-sky-50 transition-all shadow-sm text-lg active:scale-95"
         >
-          En savoir plus
+          Se connecter
         </Link>
       </div>
       
