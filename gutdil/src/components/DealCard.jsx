@@ -299,7 +299,7 @@ function DealCard({ deal }) {
                     </p>
                     
                     {/* Espace pour les interactions (Likes, Commentaires, Favoris, Partager) */}
-                    <div className="pt-3 flex justify-start items-center space-x-2.5 border-t border-sky-100/60 mt-3">
+                    <div className="pt-3 flex justify-start items-center space-x-2 border-t border-sky-100/60 mt-3 -mx-1.5">
                         
                         {/* Bouton de Like */}
                         <button 
@@ -339,7 +339,7 @@ function DealCard({ deal }) {
                             `}
                             aria-label={isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={isFavorited ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5 overflow-visible">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={isFavorited ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 overflow-visible">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499c.195-.39.77-.39.965 0l3.097 6.261a1 1 0 00.754.54l6.908.775c.429.048.6.577.29.882l-5.027 4.9c-.21.205-.306.495-.258.783l1.24 6.815c.078.43-.377.76-.756.529l-6.128-3.734a1 1 0 00-.968 0l-6.128 3.734c-.379.231-.834-.099-.756-.529l1.24-6.815a1 1 0 00-.258-.783l-5.027-4.9c-.31-.305-.139-.834.29-.882l6.908-.775a1 1 0 00.754-.54l3.097-6.261z" />
                             </svg>
                         </button>
