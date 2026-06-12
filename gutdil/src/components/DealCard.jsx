@@ -3,7 +3,7 @@ import { DEFAULT_IMAGE_URL } from '../constants/index';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { doc, runTransaction, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { doc, runTransaction, onSnapshot, deleteDoc, setDoc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, storage } from '../firebaseConfig';
 import { useAuth } from '../context/AuthContext';
@@ -42,6 +42,8 @@ function DealCard({ deal }) {
     const [ currentCommentCount, setCurrentCommentCount ] = useState(0); // Etat du compteur des commentaires
 
     const [imgFailed, setImgFailed] = useState(false);
+
+    const [isFavorited, setIsFavorited] = useState(false);
 
     const isOwner = currentUser && currentUser.uid === deal.authorId;
 
@@ -90,9 +92,21 @@ function DealCard({ deal }) {
             setHasLiked(false);
         }
 
+        // 3. Écoute si ce deal est dans mes favoris
+        let unsubscribeFavorite = () => {};
+        if (currentUser) {
+            const favDocRef = doc(db, 'users', currentUser.uid, 'favorites', deal.id);
+            unsubscribeFavorite = onSnapshot(favDocRef, (snapshot) => {
+                setIsFavorited(snapshot.exists());
+            });
+        } else {
+            setIsFavorited(false);
+        }
+
         return () => {
             unsubscribeLike();
             unsubscribeDeal();
+            unsubscribeFavorite();
         };
     }, [currentUser, deal.id]); // Supprime deal.likeCount des dépendances
 
@@ -136,6 +150,34 @@ function DealCard({ deal }) {
         } catch (error) {
             console.error("Erreur de transaction de like:", error);
             setAlert(typeof error === 'string' ? error : "Erreur lors de l'interaction.", "error");
+        }
+    };
+
+    const handleFavoriteToggle = async (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (!currentUser) {
+            triggerLoginModal("Pour ajouter ce bon plan à vos favoris, vous devez être connecté.");
+            return;
+        }
+
+        const favDocRef = doc(db, 'users', currentUser.uid, 'favorites', deal.id);
+
+        try {
+            if (isFavorited) {
+                await deleteDoc(favDocRef);
+                setAlert("Retiré des favoris.", "success");
+            } else {
+                await setDoc(favDocRef, {
+                    dealId: deal.id,
+                    addedAt: new Date()
+                });
+                setAlert("Ajouté aux favoris !", "success");
+            }
+        } catch (error) {
+            console.error("Erreur favori:", error);
+            setAlert("Une erreur est survenue lors de la mise à jour des favoris.", "error");
         }
     };
 
@@ -256,13 +298,13 @@ function DealCard({ deal }) {
                         {deal.description}
                     </p>
                     
-                    {/* Espace pour les interactions (Likes & Commentaires) */}
-                    <div className="pt-3 flex justify-start items-center space-x-4 border-t border-sky-100/60 mt-3">
+                    {/* Espace pour les interactions (Likes, Commentaires, Favoris, Partager) */}
+                    <div className="pt-3 flex justify-start items-center space-x-2.5 border-t border-sky-100/60 mt-3">
                         
                         {/* Bouton de Like */}
                         <button 
                             onClick={handleLikeToggle}
-                            className={`flex items-center text-sm font-bold transition-all px-2.5 py-1 rounded-lg hover:bg-red-50/50
+                            className={`flex items-center text-sm font-bold transition-all px-2 py-1 rounded-lg hover:bg-red-50/50
                                 ${hasLiked ? 'text-red-500 bg-red-50/30' : 'text-slate-400 hover:text-red-500'}
                             `}
                             aria-label={hasLiked ? "Ne plus aimer" : "Aimer ce deal"}
@@ -282,11 +324,24 @@ function DealCard({ deal }) {
                                     navigate(`/deals/${deal.id}`);
                                 }
                             }}
-                            className="flex items-center text-sm font-bold text-slate-400 hover:text-sky-600 hover:bg-sky-50/50 px-2.5 py-1 rounded-lg transition-all"
+                            className="flex items-center text-sm font-bold text-slate-400 hover:text-sky-600 hover:bg-sky-50/50 px-2 py-1 rounded-lg transition-all"
                             aria-label="Voir les commentaires"
                         >
                             <span className="text-base mr-1">💬</span>
                             {currentCommentCount}
+                        </button>
+
+                        {/* Bouton de Favori */}
+                        <button 
+                            onClick={handleFavoriteToggle}
+                            className={`flex items-center justify-center p-1 rounded-lg transition-all
+                                ${isFavorited ? 'text-amber-500 hover:bg-amber-50/50' : 'text-slate-400 hover:text-amber-500 hover:bg-sky-50/50'}
+                            `}
+                            aria-label={isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={isFavorited ? "currentColor" : "none"} stroke="currentColor" strokeWidth={1.5} className="w-5 h-5 overflow-visible">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499c.195-.39.77-.39.965 0l3.097 6.261a1 1 0 00.754.54l6.908.775c.429.048.6.577.29.882l-5.027 4.9c-.21.205-.306.495-.258.783l1.24 6.815c.078.43-.377.76-.756.529l-6.128-3.734a1 1 0 00-.968 0l-6.128 3.734c-.379.231-.834-.099-.756-.529l1.24-6.815a1 1 0 00-.258-.783l-5.027-4.9c-.31-.305-.139-.834.29-.882l6.908-.775a1 1 0 00.754-.54l3.097-6.261z" />
+                            </svg>
                         </button>
 
                         {/* Bouton de Partage */}
@@ -296,10 +351,10 @@ function DealCard({ deal }) {
                                 e.preventDefault();
                                 shareDeal(deal, setAlert);
                             }}
-                            className="flex items-center text-sm font-bold text-slate-400 hover:text-sky-600 hover:bg-sky-50/50 px-2.5 py-1 rounded-lg transition-all"
+                            className="flex items-center text-sm font-bold text-slate-400 hover:text-sky-600 hover:bg-sky-50/50 px-2 py-1 rounded-lg transition-all flex-shrink-0"
                             aria-label="Partager ce deal"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 mr-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 mr-1 flex-shrink-0">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 00 2.25 2.25h9a2.25 2.25 0 00 2.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
                             </svg>
                             <span>Partager</span>

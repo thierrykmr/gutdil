@@ -35,6 +35,8 @@ vi.mock('../../src/components/CommentForm', () => ({
 vi.mock('firebase/firestore', () => ({
   doc: vi.fn(),
   getDoc: (...args) => mockGetDoc(...args),
+  setDoc: vi.fn(),
+  deleteDoc: vi.fn(),
   onSnapshot: vi.fn((ref, callback) => {
     callback({ exists: () => true, data: () => ({ commentCount: 3 }) });
     return vi.fn();
@@ -74,5 +76,6 @@ describe('DealDetail', () => {
     });
     expect(screen.getByTestId('comment-list')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Partager' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Retirer des favoris' })).toBeInTheDocument();
   });
 });

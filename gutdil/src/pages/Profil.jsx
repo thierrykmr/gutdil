@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useAlert } from '../context/AlertContext';
 import { db, auth } from '../firebaseConfig';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, getDoc, doc, deleteDoc } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
+import { Link } from 'react-router-dom';
+import DealCard from '../components/DealCard';
 
 function Profil() {
   const { currentUser } = useAuth();
@@ -13,6 +15,11 @@ function Profil() {
   const [displayName, setDisplayName] = useState(currentUser?.displayName || '');
   const [isEditingName, setIsEditingName] = useState(false);
   const [updatingName, setUpdatingName] = useState(false);
+
+  const [favoriteDeals, setFavoriteDeals] = useState([]);
+  const [myDeals, setMyDeals] = useState([]);
+  const [loadingFavorites, setLoadingFavorites] = useState(true);
+  const [activeTab, setActiveTab] = useState('favorites'); // 'favorites' or 'publications'
 
   const [stats, setStats] = useState({
     totalDeals: 0,
@@ -41,7 +48,11 @@ function Profil() {
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const dealsData = snapshot.docs.map((doc) => doc.data());
+        const dealsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setMyDeals(dealsData);
         
         // Calcul des statistiques
         const totalDeals = dealsData.length;
@@ -81,6 +92,53 @@ function Profil() {
         setLoadingStats(false);
       }
     );
+
+    return () => unsubscribe();
+  }, [currentUser, setAlert]);
+
+  // Récupérer les favoris de l'utilisateur
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const favsCollectionRef = collection(db, 'users', currentUser.uid, 'favorites');
+    
+    const unsubscribe = onSnapshot(favsCollectionRef, async (snapshot) => {
+      setLoadingFavorites(true);
+      try {
+        const favDocs = snapshot.docs;
+        
+        if (favDocs.length === 0) {
+          setFavoriteDeals([]);
+          setLoadingFavorites(false);
+          return;
+        }
+
+        // Fetch each deal in parallel
+        const dealPromises = favDocs.map(async (favDoc) => {
+          const dealId = favDoc.id;
+          const dealDocRef = doc(db, 'deals', dealId);
+          const dealSnap = await getDoc(dealDocRef);
+          
+          if (dealSnap.exists()) {
+            return { id: dealSnap.id, ...dealSnap.data() };
+          } else {
+            // Clean up orphan favorites
+            await deleteDoc(doc(db, 'users', currentUser.uid, 'favorites', dealId)).catch(err => {
+              console.error("Erreur nettoyage favori orphelin :", err);
+            });
+            return null;
+          }
+        });
+
+        const fetchedDeals = await Promise.all(dealPromises);
+        setFavoriteDeals(fetchedDeals.filter(d => d !== null));
+      } catch (err) {
+        console.error("Erreur lors de la récupération des favoris :", err);
+        setAlert("Impossible de charger vos favoris.", "error");
+      } finally {
+        setLoadingFavorites(false);
+      }
+    });
 
     return () => unsubscribe();
   }, [currentUser, setAlert]);
@@ -265,6 +323,70 @@ function Profil() {
             </div>
           </div>
         )}
+      </section>
+
+      {/* 3. Section Favoris & Publications */}
+      <section className="space-y-4 pt-4">
+        {/* En-tête des onglets */}
+        <div className="flex border-b border-sky-100">
+          <button
+            onClick={() => setActiveTab('favorites')}
+            className={`py-3 px-6 font-bold text-sm transition-all border-b-2 flex items-center gap-2 focus:outline-none
+              ${activeTab === 'favorites' 
+                ? 'border-cyan-500 text-cyan-600' 
+                : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+          >
+            ⭐ Mes Favoris ({favoriteDeals.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('publications')}
+            className={`py-3 px-6 font-bold text-sm transition-all border-b-2 flex items-center gap-2 focus:outline-none
+              ${activeTab === 'publications' 
+                ? 'border-cyan-500 text-cyan-600' 
+                : 'border-transparent text-slate-400 hover:text-slate-600'}`}
+          >
+            📤 Mes Publications ({myDeals.length})
+          </button>
+        </div>
+
+        {/* Contenu des onglets */}
+        <div className="py-6">
+          {activeTab === 'favorites' ? (
+            loadingFavorites ? (
+              <div className="flex justify-center items-center py-10" data-testid="favorites-loading">
+                <div className="w-8 h-8 border-3 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : favoriteDeals.length === 0 ? (
+              <div className="text-center py-12 bg-white/50 rounded-2xl border border-sky-100/50 p-6 shadow-sm">
+                <p className="text-slate-500 mb-4 font-medium">Vous n'avez pas encore de favoris.</p>
+                <Link 
+                  to="/home" 
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-sm hover:opacity-95 transition-all shadow-md shadow-sky-500/10"
+                >
+                  Parcourir les bons plans
+                </Link>
+              </div>
+            ) : (
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {favoriteDeals.map(deal => (
+                  <DealCard key={deal.id} deal={deal} />
+                ))}
+              </div>
+            )
+          ) : (
+            myDeals.length === 0 ? (
+              <div className="text-center py-12 bg-white/50 rounded-2xl border border-sky-100/50 p-6 shadow-sm">
+                <p className="text-slate-500 font-medium">Vous n'avez pas encore publié de bon plan.</p>
+              </div>
+            ) : (
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                {myDeals.map(deal => (
+                  <DealCard key={deal.id} deal={deal} />
+                ))}
+              </div>
+            )
+          )}
+        </div>
       </section>
 
     </div>

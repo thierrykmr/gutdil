@@ -39,13 +39,32 @@ vi.mock('../../src/context/AuthContext', () => ({
 }));
 
 vi.mock('firebase/firestore', () => ({
-  collection: vi.fn(),
+  collection: vi.fn((db, ...path) => {
+    if (path.includes('favorites')) {
+      return { type: 'favorites' };
+    }
+    return { type: 'deals' };
+  }),
   query: vi.fn(() => mockQueryObj),
   where: vi.fn(),
   orderBy: vi.fn(),
-  doc: vi.fn(),
+  doc: vi.fn((db, ...path) => ({ path, type: 'doc' })),
   runTransaction: vi.fn(),
   deleteDoc: vi.fn(),
+  getDoc: vi.fn(async (docRef) => ({
+    exists: () => true,
+    id: 'deal-1',
+    data: () => ({
+      id: 'deal-1',
+      title: 'Deal 1',
+      description: 'Description 1',
+      category: 'Tech',
+      authorId: 'user-123',
+      likeCount: 5,
+      commentCount: 2,
+      createdAt: { toDate: () => new Date('2026-06-01') },
+    }),
+  })),
   onSnapshot: vi.fn((target, callback) => {
     if (target && target.type === 'query') {
       callback({
@@ -76,6 +95,12 @@ vi.mock('firebase/firestore', () => ({
               createdAt: { toDate: () => new Date('2026-06-02') },
             }),
           },
+        ],
+      });
+    } else if (target && target.type === 'favorites') {
+      callback({
+        docs: [
+          { id: 'deal-1', data: () => ({ dealId: 'deal-1' }) }
         ],
       });
     } else {
@@ -142,8 +167,8 @@ describe('Profil Page', () => {
     // Commentaires: 2 + 4 = 6
     expect(screen.getByText('💬 6')).toBeInTheDocument();
 
-    // Catégorie favorite: Tech (appears once in stats since deal cards are no longer rendered)
-    expect(screen.getByText('Tech')).toBeInTheDocument();
+    // Catégorie favorite: Tech
+    expect(screen.getAllByText('Tech')[0]).toBeInTheDocument();
   });
 
   it('allows editing display name', async () => {
@@ -165,6 +190,39 @@ describe('Profil Page', () => {
 
     await waitFor(() => {
       expect(mockUpdateProfile).toHaveBeenCalled();
+    });
+  });
+
+  it('renders favorites tab and lists favorited deals', async () => {
+    renderProfil();
+
+    await waitFor(() => {
+      expect(screen.getByText('⭐ Mes Favoris (1)')).toBeInTheDocument();
+      expect(screen.getByText('Deal 1')).toBeInTheDocument();
+    });
+  });
+
+  it('allows toggling between favorites and publications tabs', async () => {
+    renderProfil();
+ 
+    await waitFor(() => {
+      expect(screen.getByText('⭐ Mes Favoris (1)')).toBeInTheDocument();
+    });
+
+    const pubTab = screen.getByText('📤 Mes Publications (2)');
+    fireEvent.click(pubTab);
+
+    await waitFor(() => {
+      expect(screen.getAllByText('Deal 1')[0]).toBeInTheDocument();
+      expect(screen.getByText('Deal 2')).toBeInTheDocument();
+    });
+
+    const favTab = screen.getByText('⭐ Mes Favoris (1)');
+    fireEvent.click(favTab);
+
+    await waitFor(() => {
+      expect(screen.getByText('Deal 1')).toBeInTheDocument();
+      expect(screen.queryByText('Deal 2')).not.toBeInTheDocument();
     });
   });
 });

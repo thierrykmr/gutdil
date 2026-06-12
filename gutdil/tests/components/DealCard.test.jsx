@@ -95,4 +95,9 @@ describe('DealCard', () => {
     renderDealCard();
     expect(screen.getByLabelText('Partager ce deal')).toBeInTheDocument();
   });
+
+  it('renders favorite button', () => {
+    renderDealCard();
+    expect(screen.getByLabelText('Ajouter aux favoris')).toBeInTheDocument();
+  });
 });
